@@ -1,0 +1,10 @@
+// This assembly is included in the following assemblies:
+//
+//assembly_br-deploying-broker-using-operator.adoc
+
+[id='managing-broker-operator-using-operator-lifecycle-manager_{context}']
+= Installing the Operator using the Operator Lifecycle Manager
+
+include::../../modules/broker-ocp/con-br-olm-overview.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-installing-broker-operator-in-operatorhub.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-deploying-operator-from-operatorhub.adoc[leveloffset=+1]

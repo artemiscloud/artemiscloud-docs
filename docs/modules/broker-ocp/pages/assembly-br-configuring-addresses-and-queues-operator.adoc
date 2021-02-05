@@ -1,0 +1,42 @@
+// This assembly is included in the following assemblies:
+//
+//assembly-br-deploying-broker-using-operator.adoc
+
+[id='assembly-br-configuring-addresses-and-queues-operator_{context}']
+= Configuring addresses and queues for Operator-based broker deployments
+
+For an Operator-based broker deployment, you use two separate Custom Resource (CR) instances to configure address and queues and their associated settings.
+
+* To create address and queues on your brokers, you deploy a CR instance based on the address Custom Resource Definition (CRD).
+ ** If you used the OpenShift command-line interface (CLI) to install the Operator, the address CRD is the `broker_activemqartemisaddress_crd.yaml` file that was included in the `deploy/crds` of the Operator installation archive that you downloaded and extracted.
+ ** If you used OperatorHub to install the Operator, the address CRD is the `ActiveMQAretmisAddress` CRD listed under menu:Administration[Custom Resource Definitions] in the {OpenShiftContainerName} web console.
+
+* To configure address and queue settings that you then match to specific addresses, you include configuration in the main Custom Resource (CR) instance used to create your broker deployment .
++
+--
+** If you used the OpenShift CLI to install the Operator, the main broker CRD is the `broker_activemqartemis_crd.yaml` file that was included in the `deploy/crds` of the Operator installation archive that you downloaded and extracted.
+** If you used OperatorHub to install the Operator, the main broker CRD is the `ActiveMQAretmis` CRD listed under menu:Administration[Custom Resource Definitions] in the {OpenShiftContainerName} web console.
+
+[NOTE]
+====
+* To configure address settings for an Operator-based deployment, you must be using the latest version of the Operator for {BrokerName} {BrokerVersion} (that is, version {latestOperatorTag}). To learn how to upgrade the Operator to the latest version, see xref:assembly_br-upgrading-operator-based-broker-deployments_{context}[].
+====
+--
+In general, the address and queue settings that you can configure for a broker deployment on {OpenShiftContainerName} are *fully equivalent* to those of standalone broker deployments on Linux or Windows. However, you should be aware of some differences in _how_ those settings are configured. Those differences are described in the following sub-section.
+
+include::../../modules/broker-ocp/con-br-differences-in-address-and-queue-configuration-openshift-and-standalone.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-creating-addresses-and-queues-for-broker-deployment-operator.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-matching-address-settings-to-addresses-operator.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/con-br-understanding-the-default-address-settings-configuration-operator.adoc[leveloffset=+2]
+
+.Additional resources
+* To learn how to configure the `applyRule` property for address settings in your CR, see xref:proc-br-matching-address-settings-to-addresses-operator_{context}[].
+* To learn about all of the configuration options for addresses, queues, and address settings for {OpenShiftContainerName} broker deployments, see xref:ref_br-custom-resource-definition-config-reference_{context}[].
+* If you installed the {BrokerName} Operator using the OpenShift command-line interface (CLI), the installation archive that you downloaded and extracted contains some additional examples of configuring address settings. In the `deploy/examples` folder of the installation archive, see:
+** `artemis-basic-address-settings-deployment.yaml`
+** `artemis-merge-replace-address-settings-deployment.yaml`
+** `artemis-replace-address-settings-deployment.yaml`
+* For comprehensive information about configuring addresses, queues, and associated address settings for *standalone* broker deployments, see link:{BrokerConfigureBookUrl}/index#addresses[Addresses, Queues, and Topics] in __{BrokerConfigureBook}__. You can use this information to create equivalent configurations for broker deployments on {OpenShiftContainerName}.
+* For more information about Init Containers in {OpenShiftContainerName}, see:
+** link:https://docs.openshift.com/container-platform/4.5/nodes/containers/nodes-containers-init.html[Using Init Containers to perform tasks before a pod is deployed] ({OpenShiftContainerName} 4.1 and later)
+** link:https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/pods_and_services.html#pods-services-init-containers[Init Containers] ({OpenShiftContainerName} 3.11)

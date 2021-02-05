@@ -1,0 +1,30 @@
+// This assembly is included in the following assemblies:
+//
+// assembly_br-configuring-client-connections-operator.adoc
+
+[id='assembly-br-securing-client-connections_{context}']
+= Securing broker-client connections
+
+If you have enabled security on your acceptor or connector (that is, by setting `sslEnabled` to `true`), you must configure Transport Layer Security (TLS) to allow certificate-based authentication between the broker and clients. TLS is an updated, more secure version of SSL. There are two primary TLS configurations:
+
+One-way TLS:: Only the broker presents a certificate. The certificate is used by the client to authenticate the broker. This is the most common configuration.
+Two-way TLS:: Both the broker and the client present certificates. This is sometimes called _mutual authentication_.
+
+The sections that follow describe:
+
+* xref:con-br-configuring-broker-certificate-for-hostname-verification_{context}[Configuration requirements for the broker certificate used by one-way and two-way TLS]
+* xref:proc-br-configuring-one-way-tls_{context}[How to configure one-way TLS]
+* xref:proc-br-configuring-two-way-tls_{context}[How to configure two-way TLS]
+
+For both one-way and two-way TLS, you complete the configuration by generating a secret that stores the credentials required for a successful TLS handshake between the broker and the client. This is the secret name that you must specify in the `sslSecret` parameter of your secured acceptor or connector. The secret must contain a Base64-encoded broker key store (both one-way and two-way TLS), a Base64-encoded broker trust store (two-way TLS only), and the corresponding passwords for these files, also Base64-encoded. The one-way and two-way TLS configuration procedures show how to generate this secret.
+
+[NOTE]
+====
+If you do not explicitly specify a secret name in the `sslSecret` parameter of a secured acceptor or connector, the acceptor or connector assumes a default secret name. The default secret name uses the format `<CustomResourceName>-<AcceptorName>-secret` or `<CustomResourceName>-<ConnectorName>-secret`. For example, `my-broker-deployment-my-acceptor-secret`.
+
+Even if the acceptor or connector assumes a default secrete name, you must still generate this secret yourself. It is not automatically created.
+====
+
+include::../../modules/broker-ocp/con-br-configuring-broker-certificate-for-hostname-verification.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-configuring-one-way-tls-operator.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-configuring-two-way-tls-operator.adoc[leveloffset=+1]

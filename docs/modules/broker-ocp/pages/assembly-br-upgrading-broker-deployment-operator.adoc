@@ -1,0 +1,16 @@
+// This assembly is included in the following assemblies:
+//
+//assembly_br-upgrading-broker-deployments.adoc
+
+[id='assembly_br-upgrading-operator-based-broker-deployments_{context}']
+= Upgrading an Operator-based broker deployment
+
+The procedures in this section show how to upgrade:
+
+* The {BrokerName} Operator version, using both the OpenShift command-line interface (CLI) and the Operator Lifecycle Manager
+* The broker container image for an Operator-based broker deployment
+
+include::../../modules/broker-ocp/con-br-upgrading-broker-deployment-operator-before-you-begin.adoc[leveloffset=+1]
+include::assembly-br-upgrading-operator-cli.adoc[leveloffset=+1]
+include::assembly-br-upgrading-operator-olm.adoc[leveloffset=+1]
+include::assembly-br-upgrading-broker-image-operator.adoc[leveloffset=+1]

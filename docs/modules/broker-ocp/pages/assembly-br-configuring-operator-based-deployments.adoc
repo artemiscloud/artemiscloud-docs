@@ -1,0 +1,13 @@
+// This assembly is included in the following assemblies:
+//
+// master.adoc
+
+[id='assembly-br-configuring-operator-based-deployments_{context}']
+= Configuring Operator-based broker deployments
+
+include::assembly-br-configuring-addresses-and-queues-operator.adoc[leveloffset=+1]
+include::assembly-br-configuring-broker-storage-operator.adoc[leveloffset=+1]
+include::assembly-br-configuring-resource-limits-and-requests-operator.adoc[leveloffset=+1]
+include::assembly-br-configuring-client-connections-operator.adoc[leveloffset=+1]
+include::assembly-br-configuring-large-message-handling.adoc[leveloffset=+1]
+include::assembly-br-high-availability.adoc[leveloffset=+1]

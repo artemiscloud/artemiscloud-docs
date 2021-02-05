@@ -1,0 +1,16 @@
+// This assembly is included in the following assemblies:
+//
+//assembly-br-deploying-broker-using-operator.adoc
+
+[id='assembly-br-broker-storage-requirements-operator_{context}']
+= Configuring broker storage requirements
+
+To use persistent storage in an Operator-based broker deployment, you set `persistenceEnabled` to `true` in the Custom Resource (CR) instance used to create the deployment. If you do not have container-native storage in your OpenShift cluster, you need to manually provision Persistent Volumes (PVs) and ensure that these are available to be claimed by the Operator using a Persistent Volume Claim (PVC). If you want to create a cluster of two brokers with persistent storage, for example, then you need to have two PVs available. By default, each broker in your deployment requires storage of 2 GiB. However, you can configure the CR for your broker deployment to specify the size of PVC required by each broker.
+
+[IMPORTANT]
+====
+* To configure the size of the PVC required by the brokers in an Operator-based deployment, you must be using __at least__ the latest version of the Operator for {BrokerName} 7.7 (that is, version 0.17). To learn how to upgrade the Operator to the latest version for {BrokerName} {BrokerVersion}, see xref:assembly_br-upgrading-operator-based-broker-deployments_{context}[].
+* You must add the configuration for broker storage size to the main CR for your broker deployment *before* deploying the CR for the first time. You *cannot* add the configuration to a broker deployment that is already running.
+====
+
+include::../../modules/broker-ocp/proc-br-configuring-broker-storage-size-operator.adoc[leveloffset=+1]

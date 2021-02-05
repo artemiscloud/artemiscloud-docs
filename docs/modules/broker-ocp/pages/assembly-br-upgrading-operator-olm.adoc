@@ -1,0 +1,13 @@
+// This assembly is included in the following assemblies:
+//
+//assembly_br-upgrading-broker-deployment-operator.adoc
+
+[id='assembly-br-upgrading-operator-olm_{context}']
+= Upgrading the Operator using the Operator Lifecycle Manager
+
+This section describes how to use the the Operator Lifecycle Manager and OperatorHub graphical interface to upgrade different versions of the Operator to the latest version available for {BrokerName} {BrokerVersion}.
+
+For an alternative method of upgrading the {BrokerName} Operator that uses the OpenShift command-line interface (CLI), see xref:assembly-br-upgrading-operator-cli_{context}[].
+
+include::../../modules/broker-ocp/con-br-upgrading-operator-olm-before-you-begin.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-upgrading-operator-olm.adoc[leveloffset=+1]

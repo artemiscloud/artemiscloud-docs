@@ -1,0 +1,14 @@
+// This assembly is included in the following assemblies:
+//
+// master.adoc
+
+[id='assembly_br-monitoring-broker-runtime-data-using-prometheus_{context}']
+= Monitoring broker runtime metrics using Prometheus
+
+The sections that follow describe how to configure the Prometheus metrics plugin for {BrokerName} on {OpenShiftContainerName}. You can use the plugin to monitor and store broker runtime metrics. You might also use a graphical tool such as Grafana to configure more advanced visualizations and dashboards of the data that the Prometheus plugin collects.
+
+NOTE: The Prometheus metrics plugin enables you to collect and export broker metrics in Prometheus *format*. However, Red Hat *does not* provide support for installation or configuration of Prometheus itself, nor of visualization tools such as Grafana. If you require support with installing, configuring, or running Prometheus or Grafana, visit the product websites for resources such as community support and documentation.
+
+include::../../modules/broker-common/ref-br-metrics-overview.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-enabling-prometheus-plugin-ocp.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-accessing-prometheus-metrics-ocp.adoc[leveloffset=+1]

@@ -1,0 +1,18 @@
+// This assembly is included in the following assemblies:
+//
+//assembly_br-configuring-operator-based-deployments.adoc
+
+[id='assembly-br-configuring-large-message-handling-amqp_{context}']
+= Configuring large message handling for AMQP messages
+
+Clients might send large AMQP messages that can exceed the size of the broker’s internal buffer, causing unexpected errors. To prevent this situation, you can configure the broker to store messages as files when the messages are larger than a specified minimum value. Handling large messages in this way means that the broker does not hold the messages in memory. Instead, the broker stores the messages in a dedicated directory used for storing large message files.
+
+For a broker deployment on {OpenShiftContainerName}, the large messages directory is `/opt/__<custom-resource-name>__/data/large-messages` on the Persistent Volume (PV) used by the broker for message storage. When the broker stores a message as a large message, the queue retains a reference to the file in the large messages directory.
+
+[IMPORTANT]
+====
+* To configure large message handling for AMQP messages, you must be using __at least__ the latest version of the Operator for {BrokerName} 7.7 (that is, version 0.17). To learn how to upgrade the Operator to the latest version for {BrokerName} {BrokerVersion}, see xref:assembly_br-upgrading-operator-based-broker-deployments_{context}[].
+* For Operator-based broker deployments in {BrokerName} {BrokerVersion}, large message handling is available only for the AMQP protocol.
+====
+
+include::../../modules/broker-ocp/proc-br-configuring-acceptors-for-large-amqp-message-handling.adoc[leveloffset=+1]

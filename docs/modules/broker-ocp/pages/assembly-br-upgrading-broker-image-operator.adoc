@@ -1,0 +1,15 @@
+// This assembly is included in the following assemblies:
+//
+// assembly_br-upgrading-broker-deployment-operator.adoc
+
+[id='assembly-br-upgrading-broker-container-image-operator_{context}']
+= Upgrading the broker container image
+
+For an Operator-based broker deployment, the procedures in this section show how to:
+
+* xref:proc_br-upgrading-broker-image-by-specifying-tag-operator_{context}[Upgrade the broker container image by specifying an image tag]
+* xref:proc-br-upgrading-broker-image-by-specifying-product-version-operator_{context}[Upgrade the broker container image by specifying the {BrokerName} version]
+
+include::../../modules/broker-ocp/con-br-choosing-method-for-upgrading-broker-image-operator.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-upgrading-broker-image-by-specifying-tag-operator.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-upgrading-broker-image-by-specifying-product-version-operator.adoc[leveloffset=+1]

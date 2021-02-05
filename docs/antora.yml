@@ -1,0 +1,6 @@
+name: artemiscloud-docs
+title: ArtemisCloud Documentation
+version: dev
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/broker-ocp/nav.adoc

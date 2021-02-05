@@ -1,0 +1,23 @@
+// This assembly is included in the following assemblies:
+//
+//assembly_br-upgrading-broker-deployments.adoc
+
+[id='upgrading-template-based-broker-deployments_{context}']
+= Upgrading a template-based broker deployment
+
+The following procedures show how to upgrade the broker container image for a deployment that is based on application templates.
+
+[NOTE]
+====
+* To upgrade an existing {BrokerName} deployment on {OpenShiftContainerName} 3.11 to run on {OpenShiftContainerName} 4.1 or later, you must first upgrade your {OpenShiftContainerName} installation, before performing a clean installation of {BrokerName} that matches your existing deployment. To perform a clean {BrokerName} installation, use one of these methods:
+
+** xref:deploying-broker-on-ocp-using-operator_{context}[Deploying {BrokerName} on {OpenShiftContainerName} using an Operator] (Recommended)
+** xref:deploying_broker-on-ocp-using-templates_{context}[Deploying {BrokerName} on {OpenShiftContainerName} using Application Templates]
+
+* The procedures show how to manually upgrade your image specifications between _minor_ versions (for example, from `7.x` to `7.y`). If you use a floating tag such as `7.y` in your image specification, your deployment _automatically_ pulls and uses new _micro_ image versions (that is, `7.y-z`) when they become available from Red Hat, provided that the `imagePullPolicy` attribute in your Stateful Set or Deployment Config is set to `Always`.
++
+For example, suppose that the `image` attribute of your deployment specifies a floating tag of `{BrokerVersion}`. If the deployment currently uses minor version `{BrokerVersion}-5`, and a newer minor version, `{BrokerVersion}-6`, becomes available in the registry, then your deployment automatically pulls and uses the new minor version. To use the new image, each broker Pod in the deployment is restarted. If you have multiple brokers in your deployment, brokers Pods are restarted one at a time.
+====
+
+include::../../modules/broker-ocp/proc-br-upgrading-broker-templates-non-persistent.adoc[leveloffset=+1]
+include::../../modules/broker-ocp/proc-br-upgrading-broker-templates-persistent.adoc[leveloffset=+1]
