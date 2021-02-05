@@ -10,5 +10,5 @@ The procedures in this section show how to use the OpenShift command-line interf
 * For an alternative method of installing the {BrokerName} Operator that uses the OperatorHub graphical interface, see xref:managing-broker-operator-using-operator-lifecycle-manager_{context}[].
 * To learn about __upgrading__ existing Operator-based broker deployments, see xref:assembly_br-upgrading-operator-based-broker-deployments_{context}[].
 
-include::../../modules/broker-ocp/proc-br-getting-operator-code.adoc[leveloffset=+1]
-include::../../modules/broker-ocp/proc-br-deploying-operator.adoc[leveloffset=+1]
+include::./proc-br-getting-operator-code.adoc[leveloffset=+1]
+include::./proc-br-deploying-operator.adoc[leveloffset=+1]

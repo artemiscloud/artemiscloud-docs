@@ -1,1 +1,1 @@
-* xref:assembly-br-deploying-amq-broker-using-operator.adoc[Deploying amw broker using Operator]
+* xref:assembly-br-deploying-amq-broker-using-operator.adoc[Deploying broker using Operator]

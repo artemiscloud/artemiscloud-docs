@@ -5,6 +5,6 @@
 [id='operator-based-broker-deployment-examples_{context}']
 = Creating Operator-based broker deployments
 
-include::../../modules/broker-ocp/proc-br-deploying-basic-broker-using-operator.adoc[leveloffset=+1]
-include::../../modules/broker-ocp/proc-br-deploying-clustered-brokers-using-operator.adoc[leveloffset=+1]
-include::../../modules/broker-ocp/con-br-limitations-cr-changes-operator.adoc[leveloffset=+1]
+include::./proc-br-deploying-basic-broker-using-operator.adoc[leveloffset=+1]
+include::./proc-br-deploying-clustered-brokers-using-operator.adoc[leveloffset=+1]
+include::./con-br-limitations-cr-changes-operator.adoc[leveloffset=+1]
