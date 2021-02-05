@@ -1,1 +1,2 @@
-* xref:overview.adoc[Module One]
+* xref:assembly-br-planning-a-deployment.adoc[Planning a Deployment]
+* xref:assembly-br-deploying-amq-broker-using-operator.adoc.adoc[Deploying amw broker using Operator]
