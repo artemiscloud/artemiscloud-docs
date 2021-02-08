@@ -1,0 +1,8 @@
+
+. In your web browser, navigate to the *Software Downloads* page for link:{OperatorDownloadLink}}[{BrokerName} {BrokerVersionWithMicro} releases].
+
+. Ensure that the value of the *Version* drop-down list is set to `{BrokerVersionWithMicro}` and the *Releases* tab is selected.
+
+. Next to *{BrokerName} {BrokerVersion} Operator Installation Files*, click *Download*.
++
+Download of the `amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples.zip` compressed archive automatically begins.

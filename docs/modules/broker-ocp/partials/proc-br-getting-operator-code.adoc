@@ -5,108 +5,108 @@
 [id='proc_br-getting-operator-code_{context}']
 = Getting the Operator code
 
-This procedure shows how to access and prepare the code you need to install the latest version of the Operator for {BrokerName} {BrokerVersion}.
+This procedure shows how to access and prepare the code you need to install the latest version of the Operator for {OperatorName} {BrokerVersion}.
 
 .Procedure
 
-. In your web browser, navigate to the *Software Downloads* page for link:https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?product=jboss.amq.broker&downloadType=distributions&version={BrokerVersionWithMicro}[{BrokerName} {BrokerVersionWithMicro} releases].
+ifdef::UpstreamBuild[]
+include::snippets/getting_code_upstream.adoc[]
+endif::[]
+ifndef::UpstreamBuild[]
+include::snippets/getting_code_downstream.adoc[]
+endif::[]
 
-. Ensure that the value of the *Version* drop-down list is set to `{BrokerVersionWithMicro}` and the *Releases* tab is selected.
-
-. Next to *{BrokerName} {BrokerVersion} Operator Installation Files*, click *Download*.
-+
-Download of the `amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples.zip` compressed archive automatically begins.
 
 . When the download has completed, move the archive to your chosen installation directory. The following example moves the archive to a directory called `~/broker/operator`.
 +
-[source,bash,options="nowrap",subs="+attributes"]
+[source,bash,subs="+attributes"]
 ----
 $ mkdir ~/broker/operator
-$ mv amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples.zip ~/broker/operator
+$ mv {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix} ~/broker/operator
 ----
 
 . In your chosen installation directory, extract the contents of the archive. For example:
 +
-[source,bash,options="nowrap", subs="+attributes"]
+[source,bash, subs="+attributes"]
 ----
 $ cd ~/broker/operator
-$ unzip amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples.zip
+$ unzip {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix}
 ----
 
 . Switch to the directory that was created when you extracted the archive. For example:
 +
-[source,bash,options="nowrap", subs="+attributes"]
+[source,bash, subs="+attributes"]
 ----
-$ cd amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples
+$ cd {OperatorCrdName}
 ----
 
 . Log in to {OpenShiftContainerName} as a cluster administrator. For example:
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc login -u system:admin
+$ {ClientCommand} login -u system:admin
 ----
 
 . Specify the project in which you want to install the Operator. You can create a new project or switch to an existing one.
 
 .. Create a new project:
 +
-[source,bash,options="nowrap",subs="+quotes"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc new-project __<project-name>__
+$ {ClientCommand} new-project __<project-name>__
 ----
 
 .. Or, switch to an existing project:
 +
-[source,bash,options="nowrap",subs="+quotes"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc project __<project-name>__
+$ {ClientCommand} project __<project-name>__
 ----
 
 . Specify a service account to use with the Operator.
 
 .. In the `deploy` directory of the Operator archive that you extracted, open the `service_account.yaml` file.
 .. Ensure that the `kind` element is set to `ServiceAccount`.
-.. In the `metadata` section, assign a custom name to the service account, or use the default name. The default name is `amq-broker-operator`.
+.. In the `metadata` section, assign a custom name to the service account, or use the default name. The default name is `{OperatorCrdName}`.
 .. Create the service account in your project.
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc create -f deploy/service_account.yaml
+$ {ClientCommand} create -f deploy/service_account.yaml
 ----
 
 . Specify a role name for the Operator.
 .. Open the `role.yaml` file. This file specifies the resources that the Operator can use and modify.
 .. Ensure that the `kind` element is set to `Role`.
-.. In the `metadata` section, assign a custom name to the role, or use the default name. The default name is `amq-broker-operator`.
+.. In the `metadata` section, assign a custom name to the role, or use the default name. The default name is `{OperatorCrdName}`.
 .. Create the role in your project.
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc create -f deploy/role.yaml
+$ {ClientCommand} create -f deploy/role.yaml
 ----
 
 . Specify a role binding for the Operator. The role binding binds the previously-created service account to the Operator role, based on the names you specified.
 
 .. Open the `role_binding.yaml` file. Ensure that the `name` values for `ServiceAccount` and `Role` match those specified in the `service_account.yaml` and `role.yaml` files. For example:
 +
-[source,yaml,options="nowrap"]
+[source,yaml,options="nowrap",subs="+quotes,+attributes"]
 ----
 metadata:
-    name: amq-broker-operator
+    name: {OperatorCrdName}
 subjects:
     kind: ServiceAccount
-    name: amq-broker-operator
+    name: {OperatorCrdName}
 roleRef:
     kind: Role
-    name: amq-broker-operator
+    name: {OperatorCrdName}
 ----
 
 .. Create the role binding in your project.
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc create -f deploy/role_binding.yaml
+$ {ClientCommand} create -f deploy/role_binding.yaml
 ----
 
 In the procedure that follows, you deploy the Operator in your project.

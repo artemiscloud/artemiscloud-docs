@@ -1,0 +1,13 @@
+// This assembly is included in the following assemblies:
+//
+// assembly_br-deploying-broker-using-operator.adoc
+
+[id='installing-broker-operator-cli_{context}']
+= Installing the Operator using the CLI
+
+The procedures in this section show how to use the {ClientTool} command-line interface (CLI) to install and deploy the latest version of the Operator for {OperatorName} {BrokerVersion} in a given {ClientTool} project. In subsequent procedures, you use this Operator to deploy some broker instances.
+
+//* To learn about __upgrading__ existing Operator-based broker deployments, see xref:assembly_br-upgrading-operator-based-broker-deployments_{context}[].
+
+include::partial$/proc-br-getting-operator-code.adoc[leveloffset=+1]
+include::partial$/proc-br-deploying-operator.adoc[leveloffset=+1]

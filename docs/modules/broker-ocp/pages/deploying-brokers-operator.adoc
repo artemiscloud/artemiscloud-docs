@@ -1,0 +1,10 @@
+// This assembly is included in the following assemblies:
+//
+//master.adoc
+
+[id='operator-based-broker-deployment-examples_{context}']
+= Creating Operator-based broker deployments
+
+include::partial$/proc-br-deploying-basic-broker-using-operator.adoc[leveloffset=+1]
+include::partial$/proc-br-deploying-clustered-brokers-using-operator.adoc[leveloffset=+1]
+include::partial$/con-br-limitations-cr-changes-operator.adoc[leveloffset=1]

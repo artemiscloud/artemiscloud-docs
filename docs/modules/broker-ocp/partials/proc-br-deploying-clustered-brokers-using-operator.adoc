@@ -1,0 +1,69 @@
+// Module included in the following assemblies:
+//
+// assembly-deployment-examples-operator.adoc
+
+[id='proc_br-deploying-clustered-brokers_{context}']
+= Deploying clustered brokers
+
+If there are two or more broker Pods running in your project, the Pods automatically form a broker cluster. A clustered configuration enables brokers to connect to each other and redistribute messages as needed, for load balancing.
+
+The following procedure shows you how to deploy clustered brokers. By default, the brokers in this deployment use _on demand_ load balancing, meaning that brokers will forward messages only to other brokers that have matching consumers.
+
+.Prerequisites
+
+* A basic broker instance is already deployed. See xref:proc_br-deploying-basic-broker-operator_{context}[].
+
+.Procedure
+
+. Open the CR file that you used for your basic broker deployment.
+
+. For a clustered deployment, ensure that the value of `deploymentPlan.size` is `2` or greater. For example:
++
+[source,yaml,options="nowrap",subs="+attributes"]
+----
+apiVersion: broker.amq.io/v2alpha4
+kind: ActiveMQArtemis
+metadata:
+  name: ex-aao
+  application: ex-aao-app
+spec:
+    version: 7.7.0
+    deploymentPlan:
+        size: 4
+        image: {RedHatContainerRegistry}/{mainBrokerImageRepo}:{BrokerVersion}
+        ...
+----
++
+NOTE: In the `metadata` section, you need to include the `namespace` property and specify a value *only* if you are using the {{ClientTool} ContainerName} web console to create your CR instance. The value that you should specify is the name of the {ClientTool}  project for your broker deployment.
+
+. Save the modified CR file.
+
+. Log in to {ClientTool}  with administrator privileges for the project in which you previously created your basic broker deployment:
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} login -u __<user>__ -p __<password>__ --server=__<host:port>__
+----
+
+. Switch to the project in which you previously created your basic broker deployment.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} project __<project-name>__
+----
+
+. At the command line, apply the change:
++
+[source,bash,options="nowrap"subs="+quotes,+attributes"]
+----
+$ {ClientCommand} apply -f __<path/to/custom-resource-instance>__.yaml
+----
++
+In the {{ClientTool} ContainerName} web console, additional broker Pods starts in your project, according to the number specified in your CR. By default, the brokers running in the project are clustered.
+
+. Open the *Logs* tab of each Pod. The logs show that {ClientTool}  has established a cluster connection bridge on each broker. Specifically, the log output includes a line like the following:
++
+[source,options="nowrap"]
+----
+targetConnector=ServerLocatorImpl (identity=(Cluster-connection-bridge::ClusterConnectionBridge@6f13fb88
+----

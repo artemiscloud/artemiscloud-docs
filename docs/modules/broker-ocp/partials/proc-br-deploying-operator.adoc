@@ -5,61 +5,68 @@
 [id='proc-br-deploying-operator_{context}']
 = Deploying the Operator using the CLI
 
-The procedure in this section shows how to use the OpenShift command-line interface (CLI) to deploy the latest version of the Operator for {BrokerName} {BrokerVersion} in your OpenShift project.
+The procedure in this section shows how to use the {ClientTool}  command-line interface (CLI) to deploy the latest version of the Operator for {BrokerName} {BrokerVersion} in your {ClientTool}  project.
 
 .Prerequisites
 
-* You must have already prepared your OpenShift project for the Operator deployment. See xref:proc_br-getting-operator-code_{context}[].
-
+* You must have already prepared your {ClientTool}  project for the Operator deployment. See xref:proc_br-getting-operator-code_{context}[].
+ifndef::UpstreamBuild[]
 * Starting in {BrokerName} 7.3, you use a new version of the Red Hat Ecosystem Catalog to access container images. This new version of the registry requires you to become an authenticated user before you can access images. Before you can follow the procedure in this section, you must first complete the steps described in
 link:https://access.redhat.com/RegistryAuthentication[Red Hat Container Registry Authentication^].
+endif::[]
 
-* If you intend to deploy brokers with persistent storage and do not have container-native storage in your OpenShift cluster, you need to manually provision Persistent Volumes (PVs) and ensure that they are available to be claimed by the Operator. For example, if you want to create a cluster of two brokers with persistent storage (that is, by setting `persistenceEnabled=true` in your Custom Resource), you need to have two PVs available. By default, each broker instance requires storage of 2 GiB.
+* If you intend to deploy brokers with persistent storage and do not have container-native storage in your {ClientTool}  cluster, you need to manually provision Persistent Volumes (PVs) and ensure that they are available to be claimed by the Operator. For example, if you want to create a cluster of two brokers with persistent storage (that is, by setting `persistenceEnabled=true` in your Custom Resource), you need to have two PVs available. By default, each broker instance requires storage of 2 GiB.
 +
 If you specify `persistenceEnabled=false` in your Custom Resource, the deployed brokers uses _ephemeral_ storage. Ephemeral storage means that that every time you restart the broker Pods, any existing data is lost.
+ifndef::UpstreamBuild[]
 +
 For more information about provisioning persistent storage, see:
 +
 ** link:https://docs.openshift.com/container-platform/4.1/storage/understanding-persistent-storage.html[Understanding persistent storage] ({OpenShiftContainerName} 4.1 and later)
 ** link:https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/storage.html[Persistent Storage] ({OpenShiftContainerName} 3.11)
+endif::[]
+
 
 .Procedure
 
-. In the OpenShift command-line interface (CLI), log in to {OpenShiftContainerName} as a cluster administrator. For example:
+. In the {ClientTool}  command-line interface (CLI), log in to {{ClientTool} ContainerName} as a cluster administrator. For example:
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc login -u system:admin
+$ {ClientCommand} login -u system:admin
 ----
 
 . Switch to the project that you previously prepared for the Operator deployment. For example:
 +
-[source,bash,options="nowrap",subs="+quotes"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
-$ oc project __<project-name>__
+$ {ClientCommand} project __<project-name>__
 ----
 
+ifndef::UpstreamBuild[]
 . If you previously deployed version 0.6 of the {BrokerName} Operator (that is, the Technical Preview version available in {BrokerName} 7.4) :
 
 .. Remove the main broker Custom Resource (CR) that you used to create your broker deployment. Deleting the main CR removes the existing broker deployment in the project. For example:
 +
 [source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc delete -f deploy/crs/broker_v1alpha1_activemqartemis_cr.yaml.
+$ {ClientCommand} delete -f deploy/crs/broker_v1alpha1_activemqartemis_cr.yaml.
 ----
 .. Delete the Operator instance.
 +
 [source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc delete -f deploy/operator.yaml
+$ {ClientCommand} delete -f deploy/operator.yaml
 ----
 .. Remove the existing Custom Resource Definitions (CRDs) from the cluster.
 +
-[source,bash,options="nowrap",subs="+attributes"]
+endif::[]
+
+[source,bash,subs="+attributes"]
 ----
-$ oc delete -f deploy/crds/broker_v1alpha1_activemqartemis_crd.yaml
-$ oc delete -f deploy/crds/broker_v1alpha1_activemqartemisaddress_crd.yaml
-$ oc delete -f deploy/crds/broker_v1alpha1_activemqartemisscaledown_crd.yaml
+$ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemis_crd.yaml
+$ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemisaddress_crd.yaml
+$ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemisscaledown_crd.yaml
 ----
 
 . Switch to the directory that was created when you previously extracted the Operator installation archive. For example:
@@ -69,41 +76,42 @@ $ oc delete -f deploy/crds/broker_v1alpha1_activemqartemisscaledown_crd.yaml
 $ cd ~/broker/operator/amq-broker-operator-{BrokerVersionWithMicro}-ocp-install-examples
 ----
 
-. Deploy the CRDs that are included with the Operator. You must install the CRDs in your OpenShift cluster before deploying and starting the Operator.
+. Deploy the CRDs that are included with the Operator. You must install the CRDs in your {ClientTool}  cluster before deploying and starting the Operator.
 
 .. Deploy the main broker CRD.
 +
 [source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc create -f deploy/crds/{brokerMainCRD}_crd.yaml
+$ {ClientCommand} create -f deploy/crds/{brokerMainCRD}_crd.yaml
 ----
 .. Deploy the address CRD.
 +
 [source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc create -f deploy/crds/{brokerAddressingCRD}_crd.yaml
+$ {ClientCommand} create -f deploy/crds/{brokerAddressingCRD}_crd.yaml
 ----
 .. Deploy the scaledown controller CRD.
 +
 [source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc create -f deploy/crds/{brokerScaledownCRD}_crd.yaml
+$ {ClientCommand} create -f deploy/crds/{brokerScaledownCRD}_crd.yaml
+----
+. Link the pull secret associated with the account used for authentication in the Red Hat Ecosystem Catalog with the `default`, `deployer`, and `builder` service accounts for your {ClientTool}  project.
++
+[source,bash,subs="+quotes,+attributes"]
+----
+$ {ClientCommand} secrets link --for=pull default __<secret-name>__
+$ {ClientCommand} secrets link --for=pull deployer __<secret-name>__
+$ {ClientCommand} secrets link --for=pull builder __<secret-name>__
 ----
 
-. Link the pull secret associated with the account used for authentication in the Red Hat Ecosystem Catalog with the `default`, `deployer`, and `builder` service accounts for your OpenShift project.
-+
-[source,bash,options="nowrap"subs="+quotes"]
-----
-$ oc secrets link --for=pull default __<secret-name>__
-$ oc secrets link --for=pull deployer __<secret-name>__
-$ oc secrets link --for=pull builder __<secret-name>__
-----
+ifndef::UpstreamBuild[]
 +
 NOTE: In {OpenShiftContainerName} 4.1 or later, you can also use the web console to associate a pull secret with a project in which you want to deploy container images such as the {BrokerName} Operator. To do this, click menu:Administration[Service Accounts]. Specify the pull secret associated with the account that you use for authentication in the Red Hat Container Registry.
-
+endif::[]
 . In the `deploy` directory of the Operator archive that you downloaded and extracted, open the `operator.yaml` file. Ensure that the value of the `spec.containers.image` property is set to the latest Operator image for {BrokerName} {BrokerVersion}, as shown below.
 +
-[source,yaml,options="nowrap",subs="+attributes"]
+[source,yaml,subs="+attributes"]
 ----
 spec:
     template:
@@ -114,18 +122,18 @@ spec:
 
 . Deploy the Operator.
 +
-[source,bash,options="nowrap"]
+[source,bash,options="nowrap",subs="+attributes"]
 ----
-$ oc create -f deploy/operator.yaml
+$ {ClientCommand} create -f deploy/operator.yaml
 ----
 +
-In your OpenShift project, the Operator starts in a new Pod.
+In your {ClientTool}  project, the Operator starts in a new Pod.
 +
-In the {OpenShiftContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that OpenShift has deployed the Operator image that you specified, has assigned a new container to a node in your OpenShift cluster, and has started the new container.
+In the {{ClientTool} ContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that {ClientTool}  has deployed the Operator image that you specified, has assigned a new container to a node in your {ClientTool}  cluster, and has started the new container.
 +
 In addition, if you click the *Logs* tab within the Pod, the output should include lines resembling the following:
 +
-[source,options="nowrap"]
+[source]
 ----
 ...
 {"level":"info","ts":1553619035.8302743,"logger":"kubebuilder.controller","msg":"Starting Controller","controller":"activemqartemisaddress-controller"}
@@ -136,7 +144,9 @@ In addition, if you click the *Logs* tab within the Pod, the output should inclu
 +
 The preceding output confirms that the newly-deployed Operator is communicating with Kubernetes, that the controllers for the broker and addressing are running, and that these controllers have started some workers.
 
-NOTE: It is recommended that you deploy only a *single instance* of the {BrokerName} Operator in a given OpenShift project. Setting the `replicas` element of your Operator deployment to a value greater than `1`, or deploying the Operator more than once in the same project is *not* recommended.
+NOTE: It is recommended that you deploy only a *single instance* of the {BrokerName} Operator in a given {ClientTool}  project. Setting the `replicas` element of your Operator deployment to a value greater than `1`, or deploying the Operator more than once in the same project is *not* recommended.
 
+ifndef::UpstreamBuild[]
 .Additional resources
 * For an alternative method of installing the {BrokerName} Operator that uses the OperatorHub graphical interface, see xref:managing-broker-operator-using-operator-lifecycle-manager_{context}[].
+endif::[]

@@ -1,0 +1,2 @@
+== Prerequisites
+* Before you install the Operator and use it to create a broker deployment, you should consult the Operator deployment notes described in  xref:con-br-operator-deployment-notes.adoc[].

@@ -1,1 +1,4 @@
-* xref:assembly-br-deploying-amq-broker-using-operator.adoc[Deploying broker using Operator]
+.Deploying a Broker using the Operator
+* xref:prerequisites.adoc[Prerequisites]
+* xref:installing-operator-cli.adoc[Installing The Operator]
+* xref:deploying-brokers-operator.adoc[Creating a Deployment]
