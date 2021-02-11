@@ -19,7 +19,7 @@ endif::[]
 
 . When the download has completed, move the archive to your chosen installation directory. The following example moves the archive to a directory called `~/broker/operator`.
 +
-[source,bash,subs="+attributes"]
+[source,bash,options="nowrap",subs="+attributes"]
 ----
 $ mkdir ~/broker/operator
 $ mv {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix} ~/broker/operator
@@ -27,7 +27,7 @@ $ mv {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix} ~/bro
 
 . In your chosen installation directory, extract the contents of the archive. For example:
 +
-[source,bash, subs="+attributes"]
+[source,bash,options="nowrap", subs="+attributes"]
 ----
 $ cd ~/broker/operator
 $ unzip {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix}
@@ -35,7 +35,7 @@ $ unzip {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix}
 
 . Switch to the directory that was created when you extracted the archive. For example:
 +
-[source,bash, subs="+attributes"]
+[source,bash,options="nowrap", subs="+attributes"]
 ----
 $ cd {OperatorCrdName}
 ----

@@ -1,0 +1,1 @@
+include::partial$/ref-br-custom-resource-config-reference.adoc[leveloffset=+1]

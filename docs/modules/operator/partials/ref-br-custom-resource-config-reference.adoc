@@ -1,0 +1,1305 @@
+// Module included in the following assemblies:
+//
+// assembly_reference.adoc
+
+[id='ref_br-custom-resource-definition-config-reference_{context}']
+= Custom Resource configuration reference
+
+A Custom Resource Definition (CRD) is a schema of configuration items for a custom OpenShift object deployed with an Operator. By deploying a corresponding Custom Resource (CR) instance, you specify values for configuration items shown in the CRD.
+
+The following sub-sections detail the configuration items that you can set in Custom Resource instances based on the main broker and addressing CRDs.
+
+[id='broker-crd_{context}']
+== Broker Custom Resource configuration reference
+
+A CR instance based on the main broker CRD enables you to configure brokers for deployment in an OpenShift project. The following table describes the items that you can configure in the CR instance.
+
+IMPORTANT: Configuration items marked with an asterisk (***) are required in any corresponding Custom Resource (CR) that you deploy. If you do not explicitly specify a value for a non-required item, the configuration uses the default value.
+
+[cols="39%,41%,30%",options="header"]
+|===
+|Entry
+|Sub-entry
+|Description and usage
+
+|`adminUser*`
+|
+|Administrator user name required for connecting to the broker and management console.
+
+If you do not specify a value, the value is automatically generated and stored in a secret. The default secret name has a format of `__<Custom-Resource-name>__-credentials-secret`. For example, `my-broker-deployment-credentials-secret`.
+
+*Type*: string
+
+*Example*: my-user
+
+*Default value*: Automatically-generated, random value
+
+|`adminPassword*`
+|
+|Administrator password required for connecting to the broker and management console.
+
+If you do not specify a value, the value is automatically generated and stored in a secret. The default secret name has a format of `__<Custom-Resource-name>__-credentials-secret`. For example, `my-broker-deployment-credentials-secret`.
+
+*Type*: string
+
+*Example*: my-password
+
+*Default value*: Automatically-generated, random value
+
+
+|`deploymentPlan*`
+|
+|Broker deployment configuration
+
+|
+|`image*`
+|Full path of the broker container image to be pulled from the Red Hat Container Registry. The default container image tag matches the {BrokerName} version.
+
+*Type*: string
+
+*Example*: {RedHatContainerRegistry}/{mainBrokerImageRepo}:latest
+
+*Default value*: {RedHatContainerRegistry}/{mainBrokerImageRepo}:{BrokerVersion}
+
+|
+|`size*`
+|Number of broker Pods to create in the deployment.
+
+If you specify a value of 2 or greater, your broker deployment is clustered by default. The cluster user name and password are automatically generated and stored in the same secret as `adminUser` and `adminPassword`, by default.
+
+*Type*: int
+
+*Example*: 1
+
+*Default value*: 2
+
+|
+|`requireLogin`
+|Specify whether login credentials are required to connect to the broker.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`persistenceEnabled`
+|Specify whether to use journal storage for each broker Pod in the deployment. If set to `true`, each broker Pod requires an available Persistent Volume (PV) that the Operator can claim using a Persistent Volume Claim (PVC).
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+
+|
+|`initImage`
+|Init Container image used to configure the broker.
+
+*Type*: string
+
+*Default value*: {RedHatContainerRegistry}/{initContainerImageRepo}:{latestInitContainerTag}
+
+|
+|`journalType`
+|Specify whether to use asynchronous I/O (AIO) or non-blocking I/O (NIO).
+
+*Type*: string
+
+*Example*: aio
+
+*Default value*: nio
+
+|
+|`messageMigration`
+|When a broker Pod shuts down due to a failure or intentional scaledown of the broker deployment, specify whether to migrate messages to another broker Pod that is still running in the broker cluster.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`resources.limits.cpu`
+|Maximum amount of host-node CPU, in millicores, that each broker container running in a Pod in a deployment can consume.
+
+*Type*: string
+
+*Example*: "500m"
+
+*Default value*: Uses the same default value that your version of {OpenShiftContainerName} uses. Consult a cluster administrator.
+
+|
+|`resources.limits.memory`
+|Maximum amount of host-node memory, in bytes, that each broker container running in a Pod in a deployment can consume. Supports byte notation (for example, K, M, G), or the binary equivalents (Ki, Mi, Gi).
+
+*Type*: string
+
+*Example*: "1024M"
+
+*Default value*: Uses the same default value that your version of {OpenShiftContainerName} uses. Consult a cluster administrator.
+
+|
+|`resources.requests.cpu`
+|Amount of host-node CPU, in millicores, that each broker container running in a Pod in a deployment explicitly requests.
+
+*Type*: string
+
+*Example*: "250m"
+
+*Default value*: Uses the same default value that your version of {OpenShiftContainerName} uses. Consult a cluster administrator.
+
+|
+|`resources.requests.memory`
+|Amount of host-node memory, in bytes, that each broker container running in a Pod in a deployment explicitly requests. Supports byte notation (for example, K, M, G), or the binary equivalents (Ki, Mi, Gi).
+
+*Type*: string
+
+*Example*: "512M"
+
+*Default value*: Uses the same default value that your version of {OpenShiftContainerName} uses. Consult a cluster administrator.
+
+|
+|`storage.size`
+|Size, in bytes, of the Persistent Volume Claim (PVC) that each broker in a deployment requires for persistent storage. This property applies only when `persistenceEnabled` is set to `true`.  The value that you specify *must* include a unit.  Supports byte notation (for example, K, M, G), or the binary equivalents (Ki, Mi, Gi).
+
+*Type*: string
+
+*Example*: 4Gi
+
+*Default value*: 2Gi
+
+|
+|`jolokiaAgentEnabled`
+|Specifies whether the Jolokia JVM Agent is enabled for the brokers in the deployment. If the value of this property is set to `true`, Fuse Console can discover and display runtime data for the brokers.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`managementRBACEnabled`
+|Specifies whether role-based access control (RBAC) is enabled for the brokers in the deployment. To use Fuse Console, you *must* set the value to `false`, because Fuse Console uses its own role-based access control.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|`console`
+|
+|Configuration of broker management console.
+
+|
+|`expose`
+|Specify whether to expose the management console port for each broker in a deployment.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`sslEnabled`
+|Specify whether to use SSL on the management console port.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`sslSecret`
+|Secret where broker key store, trust store, and their corresponding passwords (all Base64-encoded) are stored. If you do not specify a value for `sslSecret`, the console uses a default secret name. The default secret name is in the form of `__<custom-resource-name>__-console-secret`.
+
+*Type*: string
+
+*Example*: my-broker-deployment-console-secret
+
+*Default value*: Not specified
+
+|
+|`useClientAuth`
+|Specify whether the management console requires client authorization.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|`acceptors.acceptor`
+|
+|A single acceptor configuration instance.
+
+|
+|`name*`
+|Name of acceptor.
+
+*Type*: string
+
+*Example*: my-acceptor
+
+*Default value*: Not applicable
+
+|
+|`port`
+|Port number to use for the acceptor instance.
+
+*Type*: int
+
+*Example*: 5672
+
+*Default value*: 61626 for the first acceptor that you define. The default value then increments by 10 for every subsequent acceptor that you define.
+
+|
+|`protocols`
+|Messaging protocols to be enabled on the acceptor instance.
+
+*Type*: string
+
+*Example*: amqp,core
+
+*Default value*: all
+
+|
+|`sslEnabled`
+|Specify whether SSL is enabled on the acceptor port. If set to `true`, look in the secret name specified in `sslSecret` for the credentials required by TLS/SSL.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`sslSecret`
+|Secret where broker key store, trust store, and their corresponding passwords (all Base64-encoded) are stored.
+
+If you do not specify a custom secret name for `sslSecret`, the acceptor assumes a default secret name. The default secret name has a format of `__<Custom-Resource-name>__-__<acceptor-name>__-secret`.
+
+You must always create this secret yourself, even when the acceptor assumes a default name.
+
+*Type*: string
+
+*Example*: my-broker-deployment-my-acceptor-secret
+
+*Default value*: __<Custom-Resource-name>__-__<acceptor-name>__-secret
+
+|
+|`enabledCipherSuites`
+|Comma-separated list of cipher suites to use for TLS/SSL communication.
+
+Specify the most secure cipher suite(s) supported by your client application. If you use a comma-separated list to specify a set of cipher suites that is common to both the broker and the client, or you do not specify any cipher suites, the broker and client mutually negotiate a cipher suite to use. If you do not know which cipher suites to specify, it is recommended that you first establish a broker-client connection with your client running in debug mode, to verify the cipher suites that are common to both the broker and the client. Then, configure `enabledCipherSuites` on the broker.
+
+*Type*: string
+
+*Default value*: Not specified
+
+|
+|`enabledProtocols`
+|Comma-separated list of protocols to use for TLS/SSL communication.
+
+*Type*: string
+
+*Example*: TLSv1,TLSv1.1,TLSv1.2
+
+*Default value*: Not specified
+
+|
+|`needClientAuth`
+|Specify whether the broker informs clients that two-way TLS is required on the acceptor. This property overrides `wantClientAuth`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`wantClientAuth`
+|Specify whether the broker informs clients that two-way TLS is _requested_ on the acceptor, but not required. This property is overridden by `needClientAuth`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`verifyHost`
+|Specify whether to compare the Common Name (CN) of a client's certificate to its host name, to verify that they match. This option applies only when two-way TLS is used.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`sslProvider`
+|Specify whether the SSL provider is JDK or OPENSSL.
+
+*Type*: string
+
+*Example*: OPENSSL
+
+*Default value*: JDK
+
+|
+|`sniHost`
+|Regular expression to match against the `server_name` extension on incoming connections. If the names don't match, connection to the acceptor is rejected.
+
+*Type*: string
+
+*Example*: some_regular_expression
+
+*Default value*: Not specified
+
+|
+|`expose`
+|Specify whether to expose the acceptor to clients outside {OpenShiftContainerName}.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`anycastPrefix`
+|Prefix used by a client to specify that the `anycast` routing type should be used.
+
+*Type*: string
+
+*Example*: jms.queue
+
+*Default value*: Not specified
+
+|
+|`multicastPrefix`
+|Prefix used by a client to specify that the `multicast` routing type should be used.
+
+*Type*: string
+
+*Example*: /topic/
+
+*Default value*: Not specified
+
+|
+|`connectionsAllowed`
+|Number of connections allowed on the acceptor. When this limit is reached, a DEBUG message is issued to the log, and the connection is refused. The type of client in use determines what happens when the connection is refused.
+
+*Type*: integer
+
+*Example*: 2
+
+*Default value*: 0 (unlimited connections)
+
+|
+|`amqpMinLargeMessageSize`
+|Minimum message size, in bytes, required for the broker to handle an AMQP message as a large message. If the size of an AMQP message is equal or greater to this value, the broker stores the message in a large messages directory (`/opt/__<custom-resource-name>__/data/large-messages`, by default) on the persistent volume (PV) used by the broker for message storage. Setting the value to `-1` disables large message handling for AMQP messages.
+
+*Type*: integer
+
+*Example*: 204800
+
+*Default value*: 102400 (100 KB)
+
+|`connectors.connector`
+|
+|A single connector configuration instance.
+
+|
+|`name*`
+|Name of connector.
+
+*Type*: string
+
+*Example*: my-connector
+
+*Default value*: Not applicable
+
+|
+|`type`
+|The type of connector to create; `tcp` or `vm`.
+
+*Type*: string
+
+*Example*: vm
+
+*Default value*: tcp
+
+|
+|`host*`
+|Host name or IP address to connect to.
+
+*Type*: string
+
+*Example*: 192.168.0.58
+
+*Default value*: Not specified
+
+|
+|`port*`
+|Port number to be used for the connector instance.
+
+*Type*: int
+
+*Example*: 22222
+
+*Default value*: Not specified
+
+|
+|`sslEnabled`
+|Specify whether SSL is enabled on the connector port. If set to `true`, look in the secret name specified in `sslSecret` for the credentials required by TLS/SSL.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`sslSecret`
+|Secret where broker key store, trust store, and their corresponding passwords (all Base64-encoded) are stored.
+
+If you do not specify a custom secret name for `sslSecret`, the connector assumes a default secret name. The default secret name has a format of `__<Custom-Resource-name>__-__<connector-name>__-secret`.
+
+You must always create this secret yourself, even when the connector assumes a default name.
+
+*Type*: string
+
+*Example*: my-broker-deployment-my-connector-secret
+
+*Default value*: __<Custom-Resource-name>__-__<connector-name>__-secret
+
+|
+|`enabledCipherSuites`
+|Comma-separated list of cipher suites to use for TLS/SSL communication.
+
+*Type*: string
+
+*NOTE*: For a connector, it is recommended that you *do not* specify a list of cipher suites.
+
+*Default value*: Not specified
+
+|
+|`enabledProtocols`
+|Comma-separated list of protocols to use for TLS/SSL communication.
+
+*Type*: string
+
+*Example*: TLSv1,TLSv1.1,TLSv1.2
+
+*Default value*: Not specified
+
+|
+|`needClientAuth`
+|Specify whether the broker informs clients that two-way TLS is required on the connector. This property overrides `wantClientAuth`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`wantClientAuth`
+|Specify whether the broker informs clients that two-way TLS is _requested_ on the connector, but not required. This property is overridden by `needClientAuth`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`verifyHost`
+|Specify whether to compare the Common Name (CN) of client's certificate to its host name, to verify that they match. This option applies only when two-way TLS is used.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: Not specified
+
+|
+|`sslProvider`
+|Specify whether the SSL provider is `JDK` or `OPENSSL`.
+
+*Type*: string
+
+*Example*: OPENSSL
+
+*Default value*: JDK
+
+|
+|`sniHost`
+|Regular expression to match against the `server_name` extension on outgoing connections. If the names don't match, the connector connection is rejected.
+
+*Type*: string
+
+*Example*: some_regular_expression
+
+*Default value*: Not specified
+
+|
+|`expose`
+|Specify whether to expose the connector to clients outside {OpenShiftContainerName}.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|`addressSettings.applyRule`
+|
+a| Specifies how the Operator applies the configuration that you add to the CR for each matching address or set of addresses.
+
+The values that you can specify are:
+
+`merge_all`::
++
+--
+For address settings specified in both the CR *and* the default configuration that match the same address or set of addresses:
+
+* Replace any property values specified in the default configuration with those specified in the CR.
+* Keep any property values that are specified uniquely in the CR *or* the default configuration. Include each of these in the final, merged configuration.
+--
++
+For address settings specified in either the CR *or* the default configuration that uniquely match a particular address or set of addresses, include these in the final, merged configuration.
+
+`merge_replace`::
++
+For address settings specified in both the CR *and* the default configuration that match the same address or set of addresses, include the settings specified in the *CR* in the final, merged configuration. *Do not* include any properties specified in the default configuration, even if these are not specified in the CR.
++
+For address settings specified in either the CR *or* the default configuration that uniquely match a particular address or set of addresses, include these in the final, merged configuration.
+
+`replace_all`:: Replace *all* address settings specified in the default configuration with those specified in the CR. The final, megred configuration corresponds exactly to that specified in the CR.
+--
+
+*Type*: string
+
+*Example*: replace_all
+
+*Default value*: merge_all
+
+|`addressSettings.addressSetting`
+|
+|Address settings for a matching address or __set__ of addresses.
+
+|
+|`addressFullPolicy`
+a|Specify what happens when an address configured with `maxSizeBytes` becomes full. The available policies are:
+
+`PAGE`:: Messages sent to a full address are paged to disk.
+
+`DROP`:: Messages sent to a full address are silently dropped.
+
+`FAIL`:: Messages sent to a full address are dropped and the message producers receive an exception.
+
+`BLOCK`:: Message producers will block when they try to send any further messages.
++
+The BLOCK policy works only for AMQP, OpenWire, and {CoreProtocolName}, because those protocols support flow control.
+
+*Type*: string
+
+*Example*: DROP
+
+*Default value*: PAGE
+
+|
+|`autoCreateAddresses`
+|Specify whether the broker automatically creates an address when a client sends a message to, or attempts to consume a message from, a queue that is bound to an address that does not exist.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`autoCreateDeadLetterResources`
+|Specify whether the broker automatically creates a dead letter address and queue to receive undelivered messages.
+
+If the parameter is set to `true`, the broker automatically creates a dead letter address and an associated dead letter queue. The name of the automatically-created address matches the value that you specify for `deadLetterAddress`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`autoCreateExpiryResources`
+|Specify whether the broker automatically creates an address and queue to receive expired messages.
+
+If the parameter is set to `true`, the broker automatically creates an expiry address and an associated expiry queue. The name of the automatically-created address matches the value that you specify for `expiryAddress`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`autoCreateJmsQueues`
+|This property is deprecated. Use `autoCreateQueues` instead.
+
+|
+|`autoCreateJmsTopics`
+|This property is deprecated. Use `autoCreateQueues` instead.
+
+|
+|`autoCreateQueues`
+|Specify whether the broker automatically creates a queue when a client sends a message to, or attempts to consume a message from, a queue that does not yet exist.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`autoDeleteAddresses`
+|Specify whether the broker automatically deletes automatically-created addresses when the broker no longer has any queues.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`autoDeleteAddressDelay`
+|Time, in milliseconds, that the broker waits before automatically deleting an automatically-created address when the address has no queues.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: 0
+
+|
+|`autoDeleteJmsQueues`
+|This property is deprecated. Use `autoDeleteQueues` instead.
+
+|
+|`autoDeleteJmsTopics`
+|This property is deprecated. Use `autoDeleteQueues` instead.
+
+|
+|`autoDeleteQueues`
+|Specify whether the broker automatically deletes an automatically-created queue when the queue has no consumers and no messages.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`autoDeleteCreatedQueues`
+|Specify whether the broker automatically deletes a manually-created queue when the queue has no consumers and no messages.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`autoDeleteQueuesDelay`
+|Time, in milliseconds, that the broker waits before automatically deleting an automatically-created queue when the queue has no consumers.
+
+*Type*: integer
+
+*Example*: 10
+
+*Default value*: 0
+
+|
+|`autoDeleteQueuesMessageCount`
+|Maximum number of messages that can be in a queue before the broker evaluates whether the queue can be automatically deleted.
+
+*Type*: integer
+
+*Example*: 5
+
+*Default value*: 0
+
+|
+|`configDeleteAddresses`
+a|When the configuration file is reloaded, this parameter specifies how to handle an address (and its queues) that has been deleted from the configuration file. You can specify the following values:
+
+`OFF`:: The broker does not delete the address when the configuration file is reloaded.
+`FORCE`:: The broker deletes the address and its queues when the configuration file is reloaded. If there are any messages in the queues, they are removed also.
+
+*Type*: string
+
+*Example*: FORCE
+
+*Default value*: OFF
+
+|
+|`configDeleteQueues`
+a|When the configuration file is reloaded, this setting specifies how the broker handles queues that have been deleted from the configuration file. You can specify the following values:
+
+`OFF`:: The broker does not delete the queue when the configuration file is reloaded.
+`FORCE`:: The broker deletes the queue when the configuration file is reloaded. If there are any messages in the queue, they are removed also.
+
+*Type*: string
+
+*Example*: FORCE
+
+*Default value*: OFF
+
+|
+|`deadLetterAddress`
+|The address to which the broker sends dead (that is, __undelivered__) messages.
+
+*Type*: string
+
+*Example*: DLA
+
+*Default value*: None
+
+|
+|`deadLetterQueuePrefix`
+|Prefix that the broker applies to the name of an automatically-created dead letter queue.
+
+*Type*: string
+
+*Example*: myDLQ.
+
+*Default value*: DLQ.
+
+|
+|`deadLetterQueueSuffix`
+|Suffix that the broker applies to an automatically-created dead letter queue.
+
+*Type*: string
+
+*Example*: .DLQ
+
+*Default value*: None
+
+|
+|`defaultAddressRoutingType`
+|Routing type used on automatically-created addresses.
+
+*Type*: string
+
+*Example*: ANYCAST
+
+*Default value*: MULTICAST
+
+|
+|`defaultConsumersBeforeDispatch`
+|Number of consumers needed before message dispatch can begin for queues on an address.
+
+*Type*: integer
+
+*Example*: 5
+
+*Default value*: 0
+
+|
+|`defaultConsumerWindowSize`
+|Default window size, in bytes, for a consumer.
+
+*Type*: integer
+
+*Example*: 300000
+
+*Default value*: 1048576 (1024*1024)
+
+|
+|`defaultDelayBeforeDispatch`
+|Default time, in milliseconds, that the broker waits before dispatching messages if the value specified for `defaultConsumersBeforeDispatch` has not been reached.
+
+*Type*: integer
+
+*Example*: 5
+
+*Default value*: -1 (no delay)
+
+|
+|`defaultExclusiveQueue`
+|Specifies whether all queues on an address are exclusive queues by default.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`defaultGroupBuckets`
+|Number of buckets to use for message grouping.
+
+*Type*: integer
+
+*Example*: 0 (message grouping disabled)
+
+*Default value*: -1 (no limit)
+
+|
+|`defaultGroupFirstKey`
+|Key used to indicate to a consumer which message in a group is first.
+
+*Type*: string
+
+*Example*: firstMessageKey
+
+*Default value*: None
+
+|
+|`defaultGroupRebalance`
+|Specifies whether to rebalance groups when a new consumer connects to the broker.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`defaultGroupRebalancePauseDispatch`
+|Specifies whether to pause message dispatch while the broker is rebalancing groups.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`defaultLastValueQueue`
+|Specifies whether all queues on an address are last value queues by default.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`defaultLastValueKey`
+|Default key to use for a last value queue.
+
+*Type*: string
+
+*Example*: stock_ticker
+
+*Default value*: None
+
+|
+|`defaultMaxConsumers`
+|Maximum number of consumers allowed on a queue at any time.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: -1 (no limit)
+
+|
+|`defaultNonDestructive`
+|Specifies whether all queues on an address are non-destructive by default.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+
+|
+|`defaultPurgeOnNoConsumers`
+|Specifies whether the broker purges the contents of a queue once there are no consumers.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`defaultQueueRoutingType`
+|Routing type used on automatically-created queues. The default value is `MULTICAST`.
+
+*Type*: string
+
+*Example*: ANYCAST
+
+*Default value*: MULTICAST
+
+|
+|`defaultRingSize`
+|Default ring size for a matching queue that does not have a ring size explicitly set.
+
+*Type*: integer
+
+*Example*: 3
+
+*Default value*: -1 (no size limit)
+
+|
+|`enableMetrics`
+|Specifies whether a configured metrics plugin such as the Prometheus plugin collects metrics for a matching address or set of addresses.
+
+*Type*: Boolean
+
+*Example*: false
+
+*Default value*: true
+
+|
+|`expiryAddress`
+|Address that receives expired messages.
+
+*Type*: string
+
+*Example*: myExpiryAddress
+
+*Default value*: None
+
+|
+|`expiryDelay`
+|Expiration time, in milliseconds, applied to messages that are using the default expiration time.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: -1 (no expiration time applied)
+
+|
+|`expiryQueuePrefix`
+|Prefix that the broker applies to the name of an automatically-created expiry queue.
+
+*Type*: string
+
+*Example*: myExp.
+
+*Default value*: EXP.
+
+|
+|`expiryQueueSuffix`
+|Suffix that the broker applies to the name of an automatically-created expiry queue.
+
+*Type*: string
+
+*Example*: .EXP
+
+*Default value*: None
+
+|
+|`lastValueQueue`
+|Specify whether a queue uses only last values or not.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`managementBrowsePageSize`
+|Specify how many messages a management resource can browse.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: 200
+
+|
+|`match`*
+a|String that matches address settings to addresses configured on the broker. You can specify an exact address name or use a wildcard expression to match the address settings to a __set__ of addresses.
+
+If you use a wildcard expression as a value for the `match` property, you must enclose the value in single quotation marks, for example, `'myAddresses*'`.
+
+*Type*: string
+
+*Example*: 'myAddresses*'
+
+*Default value*: None
+
+|
+|`maxDeliveryAttempts`
+|Specifies how many times the broker attempts to deliver a message before sending the message to the configured dead letter address.
+
+*Type*: integer
+
+*Example*: 20
+
+*Default value*: 10
+
+|
+|`maxExpiryDelay`
+|Expiration time, in milliseconds, applied to messages that are using an expiration time greater than this value.
+
+*Type*: integer
+
+*Example*: 20
+
+*Default value*: -1 (no maximum expiration time applied)
+
+|
+|`maxRedeliveryDelay`
+|Maximum value, in milliseconds, between message redelivery attempts made by the broker.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: The default value is ten times the value of `redeliveryDelay`, which has a default value of `0`.
+
+|
+|`maxSizeBytes`
+|Maximum memory size, in bytes, for an address. Used when `addressFullPolicy` is set to `PAGING`, `BLOCK`, or `FAIL`. Also supports byte notation such as "K", "Mb", and "GB".
+
+*Type*: string
+
+*Example*: 10Mb
+
+*Default value*: -1 (no limit)
+
+|
+|`maxSizeBytesRejectThreshold`
+|Maximum size, in bytes, that an address can reach before the broker begins to reject messages. Used when the `address-full-policy` is set to `BLOCK`. Works in combination with `maxSizeBytes` for the AMQP protocol only.
+
+*Type*: integer
+
+*Example*: 500
+
+*Default value*: -1 (no maximum size)
+
+|
+|`messageCounterHistoryDayLimit`
+|Number of days for which a broker keeps a message counter history for an address.
+
+*Type*: integer
+
+*Example*: 5
+
+*Default value*: 0
+
+|
+|`minExpiryDelay`
+|Expiration time, in milliseconds, applied to messages that are using an expiration time lower than this value.
+
+*Type*: integer
+
+*Example*: 20
+
+*Default value*: -1 (no minimum expiration time applied)
+
+|
+|`pageMaxCacheSize`
+|Number of page files to keep in memory to optimize I/O during paging navigation.
+
+*Type*: integer
+
+*Example*: 10
+
+*Default value*: 5
+
+|
+|`pageSizeBytes`
+|Paging size in bytes. Also supports byte notation such as `K`, `Mb`, and `GB`.
+
+*Type*: string
+
+*Example*: 20971520
+
+*Default value*: 10485760 (approximately 10.5 MB)
+
+|
+|`redeliveryDelay`
+|Time, in milliseconds, that the broker waits before redelivering a cancelled message.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: 0
+
+|
+|`redeliveryDelayMultiplier`
+|Multiplying factor to apply to the value of `redeliveryDelay`.
+
+*Type*: number
+
+*Example*: 5
+
+*Default value*: 1
+
+|
+|`redeliveryCollisionAvoidanceFactor`
+|Multiplying factor to apply to the value of `redeliveryDelay` to avoid collisions.
+
+*Type*: number
+
+*Example*: 1.1
+
+*Default value*: 0
+
+|
+|`redistributionDelay`
+|Time, in milliseconds, that the broker waits after the last consumer is closed on a queue before redistributing any remaining messages.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: -1 (not set)
+
+|
+|`retroactiveMessageCount`
+|Number of messages to keep for future queues created on an address.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: 0
+
+|
+|`sendToDlaOnNoRoute`
+|Specify whether a message will be sent to the configured dead letter address if it cannot be routed to any queues.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`slowConsumerCheckPeriod`
+|How often, in *seconds*, that the broker checks for slow consumers.
+
+*Type*: integer
+
+*Example*: 15
+
+*Default value*: 5
+
+|
+|`slowConsumerPolicy`
+|Specifies what happens when a slow consumer is identified. Valid options are `KILL` or `NOTIFY`. `KILL` kills the consumer's connection, which impacts any client threads using that same connection. `NOTIFY` sends a `CONSUMER_SLOW` management notification to the client.
+
+*Type*: string
+
+*Example*: KILL
+
+*Default value*: NOTIFY
+
+|
+|`slowConsumerThreshold`
+|Minimum rate of message consumption, in messages per second, before a consumer is considered slow.
+
+*Type*: integer
+
+*Example*: 100
+
+*Default value*: -1 (not set)
+
+
+|`upgrades`
+|
+|
+
+|
+|`enabled`
+|When you update the value of `version` to specify a new target version of {BrokerName}, specify whether to allow the Operator to automatically update the `deploymentPlan.image` value to a broker container image that corresponds to that version of {BrokerName}.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|
+|`minor`
+|Specify whether to allow the Operator to automatically update the `deploymentPlan.image` value when you update the value of `version` from one _minor_ version of {BrokerName} to another, for example, from `7.6.0` to `{BrokerVersionWithMicro}`.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+|`version`
+|
+|Specify a target _minor_ version of {BrokerName} for which you want the Operator to automatically update the CR to use a corresponding broker container image. For example, if you change the value of `version` from `7.6.0` to `7.7.0` (and `upgrades.enabled` and `upgrades.minor` are both set to `true`), then the Operator updates `deploymentPlan.image` to a broker image of the form `registry.redhat.io/amq7/amq-broker:7.7-x`.
+
+*Type*: string
+
+*Example*: 7.7.0
+
+*Default value*: Current version of {BrokerName}
+
+|===
+
+[id='addressing-crd_{context}']
+== Address Custom Resource configuration reference
+
+A CR instance based on the address CRD enables you to define addresses and queues for the brokers in your deployment. The following table details the items that you can configure.
+
+IMPORTANT: Configuration items marked with an asterisk (***) are required in any corresponding Custom Resource (CR) that you deploy. If you do not explicitly specify a value for a non-required item, the configuration uses the default value.
+
+[cols="50%,50%",options="header"]
+|===
+|Entry
+|Description and usage
+
+|`addressName*`
+|Address name to be created on broker.
+
+*Type*: string
+
+*Example*: address0
+
+*Default value*: Not specified
+
+|`queueName*`
+|Queue name to be created on broker.
+
+*Type*: string
+
+*Example*: queue0
+
+*Default value*: Not specified
+
+|`removeFromBrokerOnDelete*`
+|Specify whether the Operator removes existing addresses for all brokers in a deployment when you remove the address CR instance for that deployment. The default value is `false`, which means the Operator does not delete existing addresses when you remove the CR.
+
+*Type*: Boolean
+
+*Example*: true
+
+*Default value*: false
+
+
+|`routingType*`
+|Routing type to be used; `anycast` or `multicast`.
+
+*Type*: string
+
+*Example*: anycast
+
+*Default value*: Not specified
+|===

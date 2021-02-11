@@ -1,0 +1,22 @@
+// Module included in the following assemblies:
+//
+// assembly-deploying-broker-using-operator.adoc
+
+[id='con_br-cr-overview_{context}']
+= Overview of the {BrokerName} Operator sample Custom Resources
+
+The AMQ Broker Operator archive that you download and extract during installation includes sample Custom Resource (CR) files in the `deploy/crs` directory. These sample CR files enable you to:
+
+* Deploy a minimal broker without SSL or clustering.
+* Define addresses.
+
+The broker Operator archive that you download and extract also includes CRs for example deployments in the `deploy/examples` directory, as listed below.
+
+`artemis-basic-deployment.yaml`:: Basic broker deployment.
+`artemis-persistence-deployment.yaml`:: Broker deployment with persistent storage.
+`artemis-cluster-deployment.yaml`:: Deployment of clustered brokers.
+`artemis-persistence-cluster-deployment.yaml`:: Deployment of clustered brokers with persistent storage.
+`artemis-ssl-deployment.yaml`:: Broker deployment with SSL security.
+`artemis-ssl-persistence-deployment.yaml`:: Broker deployment with SSL security and persistent storage.
+`artemis-aio-journal.yaml`:: Use of asynchronous I/O (AIO) with the broker journal.
+`address-queue-create.yaml`:: Address and queue creation.

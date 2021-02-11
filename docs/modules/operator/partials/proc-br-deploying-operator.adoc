@@ -62,7 +62,7 @@ $ {ClientCommand} delete -f deploy/operator.yaml
 +
 endif::[]
 
-[source,bash,subs="+attributes"]
+[source,bash,options="nowrap",subs="+attributes"]
 ----
 $ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemis_crd.yaml
 $ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemisaddress_crd.yaml
@@ -98,7 +98,7 @@ $ {ClientCommand} create -f deploy/crds/{brokerScaledownCRD}_crd.yaml
 ----
 . Link the pull secret associated with the account used for authentication in the Red Hat Ecosystem Catalog with the `default`, `deployer`, and `builder` service accounts for your {ClientTool}  project.
 +
-[source,bash,subs="+quotes,+attributes"]
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
 $ {ClientCommand} secrets link --for=pull default __<secret-name>__
 $ {ClientCommand} secrets link --for=pull deployer __<secret-name>__
@@ -111,7 +111,7 @@ NOTE: In {OpenShiftContainerName} 4.1 or later, you can also use the web console
 endif::[]
 . In the `deploy` directory of the Operator archive that you downloaded and extracted, open the `operator.yaml` file. Ensure that the value of the `spec.containers.image` property is set to the latest Operator image for {BrokerName} {BrokerVersion}, as shown below.
 +
-[source,yaml,subs="+attributes"]
+[source,yaml,options="nowrap",subs="+attributes"]
 ----
 spec:
     template:
@@ -129,11 +129,11 @@ $ {ClientCommand} create -f deploy/operator.yaml
 +
 In your {ClientTool}  project, the Operator starts in a new Pod.
 +
-In the {{ClientTool} ContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that {ClientTool}  has deployed the Operator image that you specified, has assigned a new container to a node in your {ClientTool}  cluster, and has started the new container.
+In the {ContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that {ClientTool} has deployed the Operator image that you specified, has assigned a new container to a node in your {ClientTool}  cluster, and has started the new container.
 +
 In addition, if you click the *Logs* tab within the Pod, the output should include lines resembling the following:
 +
-[source]
+[source,options="nowrap"]
 ----
 ...
 {"level":"info","ts":1553619035.8302743,"logger":"kubebuilder.controller","msg":"Starting Controller","controller":"activemqartemisaddress-controller"}
