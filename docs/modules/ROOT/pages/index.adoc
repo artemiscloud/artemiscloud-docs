@@ -1,1 +1,1 @@
-Welcome to The ArtemisCloud documentation
+Welcome to The ArtemisCloud documentation. This documentation is open source and can be found at link:https://github.com/artemiscloud/artemiscloud-docs[here]. All contributions are welcome
