@@ -1,0 +1,13 @@
+. Log in to {ClientTool}  with administrator privileges for the project in which you previously created your basic broker deployment:
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} login -u __<user>__ -p __<password>__ --server=__<host:port>__
+----
+
+. Switch to the project in which you previously created your basic broker deployment.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} project __<project-name>__
+----

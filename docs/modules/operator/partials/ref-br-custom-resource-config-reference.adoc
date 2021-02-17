@@ -5,14 +5,14 @@
 [id='ref_br-custom-resource-definition-config-reference_{context}']
 = Custom Resource configuration reference
 
-A Custom Resource Definition (CRD) is a schema of configuration items for a custom OpenShift object deployed with an Operator. By deploying a corresponding Custom Resource (CR) instance, you specify values for configuration items shown in the CRD.
+A Custom Resource Definition (CRD) is a schema of configuration items for a custom {ClientTool} object deployed with an Operator. By deploying a corresponding Custom Resource (CR) instance, you specify values for configuration items shown in the CRD.
 
 The following sub-sections detail the configuration items that you can set in Custom Resource instances based on the main broker and addressing CRDs.
 
 [id='broker-crd_{context}']
 == Broker Custom Resource configuration reference
 
-A CR instance based on the main broker CRD enables you to configure brokers for deployment in an OpenShift project. The following table describes the items that you can configure in the CR instance.
+A CR instance based on the main broker CRD enables you to configure brokers for deployment in {ClientToolArticle} project. The following table describes the items that you can configure in the CR instance.
 
 IMPORTANT: Configuration items marked with an asterisk (***) are required in any corresponding Custom Resource (CR) that you deploy. If you do not explicitly specify a value for a non-required item, the configuration uses the default value.
 

@@ -10,20 +10,24 @@ The following procedure shows how to use a Custom Resource (CR) instance to crea
 [NOTE]
 ====
 * You cannot create more than one broker deployment in a given {ClientTool}  project by deploying multiple Custom Resource (CR) instances. However, when you have created a broker deployment in a project, you *can* deploy multiple CR instances for addresses.
+ifndef::UpstreamBuild[]
 * In {BrokerName} {BrokerVersion}, if you want to configure the following items, you must add the appropriate configuration to the main broker CR instance *before* deploying the CR for the first time.
 ** xref:proc-br-configuring-broker-storage-size_{context}[The size of the Persistent Volume Claim (PVC) required by each broker in a deployment for persistent storage]
 ** xref:proc-br-configuring-broker-limits-and-requests_{context}[Limits and requests for memory and CPU for each broker in a deployment]
+endif::[]
 ====
 
 .Prerequisites
 
-* You must have already installed the {BrokerName} Operator.
+* You must have already installed the {OperatorName} Operator.
 
-** To use the {ClientTool}  command-line interface (CLI) to install the {BrokerName} Operator, see xref:installing-broker-operator-cli_{context}[].
+** To use the {ClientTool}  command-line interface (CLI) to install the {BrokerName} Operator, see xref:installing-operator-cli.adoc#installing-broker-operator-cli_{context}[Installing the Operator].
+ifndef::UpstreamBuild[]
 ** To use the OperatorHub graphical interface to install the {BrokerName} Operator, see xref:managing-broker-operator-using-operator-lifecycle-manager_{context}[].
 
 * Starting in {BrokerName} 7.3, you use a new version of the Red Hat Ecosystem Catalog to access container images. This new version of the registry requires you to become an authenticated user before you can access images. Before you can follow the procedure in this section, you must first complete the steps described in
 link:https://access.redhat.com/RegistryAuthentication[Red Hat Container Registry Authentication^].
+endif::[]
 
 .Procedure
 
@@ -31,25 +35,12 @@ When you have successfully installed the Operator, the Operator is running and l
 
 . Start configuring a Custom Resource (CR) instance for the broker deployment.
 +
---
-.. Using the {ClientTool}  command-line interface:
-... Log in to {ClientTool}  as a user that has privileges to deploy CRs in the project in which you are creating the deployment:
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} login -u __<user>__ -p __<password>__ --server=__<host:port>__
-----
-... Open the sample CR file called `broker_activemqartemis_cr.yaml` that is included in the `deploy/crs` directory of the Operator installation archive that you downloaded and extracted.
-
-.. Using the {{ClientTool} ContainerName} web console:
-... Log in to the console as a user that has privileges to deploy CRs in the project in which you are creating the deployment.
-... Start a new CR instance based on the main broker CRD. In the left pane, click menu:Administration[Custom Resource Definitions]
-... Click the `ActiveMQArtemis` CRD.
-... Click the `Instances` tab.
-... Click *Create ActiveMQArtemis*.
-+
-Within the console, a YAML editor opens, enabling you to configure a CR instance.
-
+ifndef::UpstreamBuild[]
+include::snippets/creating_broker_1_openshift.adoc[]
+endif::[]
+ifdef::UpstreamBuild[]
+include::snippets/creating_broker_1_kube.adoc[]
+endif::[]
 For a basic broker deployment, the configuration might resemble that shown below. This configuration is the default content of the `broker_activemqartemis_cr.yaml` sample CR.
 
 [source,yaml,options="nowrap",subs="+attributes"]
@@ -68,70 +59,23 @@ spec:
 ----
 --
 +
-Observe that the sample CR uses a naming convention of `ex-aao`. This naming convention denotes that the CR is an *example* resource for the {BrokerName} (based on the *ActiveMQ Artemis* project) *Operator*. When you deploy this sample CR, the resulting Stateful Set uses the name `ex-aao-ss`. Furthermore, broker Pods in the deployment are directly based on the Stateful Set name, for example, `ex-aao-ss-0`, `ex-aao-ss-1`, and so on. The application name in the CR appears in the deployment as a label on the Stateful Set. You might use this label in a Pod selector, for example.
+Observe that the sample CR uses a naming convention of `ex-aao`. This naming convention denotes that the CR is an *example* resource for the {OperatorName} (based on the *ActiveMQ Artemis* project) *Operator*. When you deploy this sample CR, the resulting Stateful Set uses the name `ex-aao-ss`. Furthermore, broker Pods in the deployment are directly based on the Stateful Set name, for example, `ex-aao-ss-0`, `ex-aao-ss-1`, and so on. The application name in the CR appears in the deployment as a label on the Stateful Set. You might use this label in a Pod selector, for example.
 +
-NOTE: In the `metadata` section, you need to include the `namespace` property and specify a value *only* if you are using the {{ClientTool} ContainerName} web console to create your CR instance. The value that you should specify is the name of the {ClientTool}  project for your broker deployment.
-
+ifndef::UpstreamBuild[]
+NOTE: In the `metadata` section, you need to include the `namespace` property and specify a value *only* if you are using the {OpenShiftContainerName} web console to create your CR instance. The value that you should specify is the name of the {ClientTool}  project for your broker deployment.
+endif::[]
 . The `size` value specifies the number of brokers to deploy. The default value of `2` specifies a clustered broker deployment of two brokers. However, to deploy a single broker instance, change the value to `1`.
 
 . The `image` value specifies the container image to use to launch the broker. Ensure that this value specifies the latest version of the {BrokerName} {BrokerVersion} broker container image in the Red Hat Ecosystem Catalog, as shown below.
 +
 [source,yaml,options="nowrap",subs="+attributes"]
 ----
-image: {RedHatContainerRegistry}/{mainBrokerImageRepo}:{BrokerVersion}
+image: {RedHatContainerRegistry}/{mainBrokerImageRepo}:{latestBrokerImageTag}
 ----
 +
-NOTE: In the preceding step, the `image` attribute specifies a _floating_ image tag (that is, `{BrokerVersion}`) rather than a full image tag (for example, `{BrokerVersion}-5`). When you specify this floating tag, your deployment uses the latest image available in the {BrokerVersion} image stream. In addition, when you specify a floating tag such as this, if the `imagePullPolicy` attribute in your Stateful Set is set to `Always`, your deployment automatically pulls and uses new _micro_ image versions (for example, `{BrokerVersion}-6`, `{BrokerVersion}-7`, and so on) when they become available from Red Hat.
+NOTE: In the preceding step, the `image` attribute specifies a _floating_ image tag (that is, `{BrokerVersion}`) rather than a full image tag (for example, `{BrokerVersion}-5`). When you specify this floating tag, your deployment uses the latest image available in the {BrokerVersion} image stream. In addition, when you specify a floating tag such as this, if the `imagePullPolicy` attribute in your Stateful Set is set to `Always`, your deployment automatically pulls and uses new _micro_ image versions (for example, `{BrokerVersion}-6`, `{BrokerVersion}-7`, and so on) when they become available from {Vendor}.
 
-. Deploy the CR instance.
-
-.. Using the {ClientTool}  command-line interface:
-... Save the CR file.
-... Switch to the project in which you are creating the broker deployment.
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} project __<project-name>__
-----
-... Create the CR.
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} create -f __<path/to/custom-resource-instance>__.yaml
-----
-
-.. Using the {{ClientTool} ContainerName} web console:
-... When you have finished configuring the CR, click *Create*.
-
-. In the {{ClientTool} ContainerName} web console, click menu:Workloads[Stateful Sets] ({{ClientTool} ContainerName} 4.1 or later) or menu:Applications[Stateful Sets] ({{ClientTool} ContainerName} 3.11). You see a new Stateful Set called `ex-aao-ss`.
-.. Click the *ex-aao-ss* Stateful Set. You see that there is one Pod, corresponding to the single broker that you defined in the CR.
-.. Within the Stateful Set, click the *Pods* tab. Click the *ex-aao-ss* Pod. On the *Events* tab of the running Pod, you see that the broker container has started. The *Logs* tab shows that the broker itself is running.
-
-. To test that the broker is running normally, access a shell on the broker Pod to send some test messages.
-
-.. Using the {{ClientTool} ContainerName} web console:
-... Click menu:Workloads[Pods] ({{ClientTool} ContainerName} 4.1 or later) or menu:Applications[Pods] ({{ClientTool} ContainerName} 3.11).
-... Click the *ex-aao-ss* Pod.
-... Click the *Terminal* tab.
-
-.. Using the {ClientTool}  command-line interface:
-... Get the Pod names and internal IP addresses for your project.
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} get pods -o wide
-
-NAME                          STATUS   IP
-amq-broker-operator-54d996c   Running  10.129.2.14
-ex-aao-ss-0                   Running  10.129.2.15
-----
-
-... Access the shell for the broker Pod.
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} rsh ex-aao-ss-0
-----
+include::snippets/creating_broker_4-6_kube.adoc[]
 
 . From the shell, use the `artemis` command to send some test messages. Specify the internal IP address of the broker Pod in the URL. For example:
 +
@@ -155,5 +99,7 @@ Producer ActiveMQQueue[demoQueue], thread=0 Elapsed time in milli second : 3492 
 ----
 
 .Additional resources
-* For a complete configuration reference for the main broker Custom Resource (CR), see xref:ref_br-custom-resource-definition-config-reference_{context}[].
+* For a complete configuration reference for the main broker Custom Resource (CR), see xref:reference.adoc#ref_br-custom-resource-definition-config-reference_{context}[Broker Custom Resource configuration reference].
+ifndef::UpstreamBuild[]
 * To learn how to connect a running broker to {ConsoleName}, see xref:assembly-br-connecting-to-console-operator_{context}[].
+endif::[]

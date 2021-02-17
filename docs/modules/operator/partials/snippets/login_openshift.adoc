@@ -1,0 +1,22 @@
+. Log in to {OpenShiftContainerName} as a cluster administrator. For example:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} login -u system:admin
+----
+
+. Specify the project in which you want to install the Operator. You can create a new project or switch to an existing one.
+
+.. Create a new project:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} new-project __<project-name>__
+----
+
+.. Or, switch to an existing project:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} project __<project-name>__
+----

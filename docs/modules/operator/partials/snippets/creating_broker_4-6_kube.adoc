@@ -1,0 +1,45 @@
+. Deploy the CR instance.
+
+.. Save the CR file.
+.. Switch to the namespace in which you are creating the broker deployment.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} config set-context $(kubectl config current-context) --namespace= __<project-name>__
+----
+.. Create the CR.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} create -f __<path/to/custom-resource-instance>__.yaml
+----
+
+. In the {OpenShiftContainerName} web console you will see a new Stateful Set called `ex-aao-ss`.
+.. Click the *ex-aao-ss* Stateful Set. You see that there is one Pod, corresponding to the single broker that you defined in the CR.
+.. Within the Stateful Set, click the pod link and you should see the status of th epod as running. Click on the logs link in the top right corner to see the broker's output.
+
+. To test that the broker is running normally, access a shell on the broker Pod to send some test messages.
+
+.. Using the {OpenShiftContainerName} web console:
+... Click Pods on the left menu
+... Click the *ex-aao-ss* Pod.
+... In the top righthand corner, click the link to exec into pod
+
+.. Using the {ClientTool}  command-line interface:
+... Get the Pod names and internal IP addresses for your project.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} get pods -o wide
+
+NAME                          STATUS   IP
+amq-broker-operator-54d996c   Running  10.129.2.14
+ex-aao-ss-0                   Running  10.129.2.15
+----
+
+... Access the shell for the broker Pod.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} exec --stdin --tty ex-aao-ss-0 -- /bin/bash
+----

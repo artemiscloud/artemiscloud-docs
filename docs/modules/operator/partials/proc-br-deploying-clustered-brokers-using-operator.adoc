@@ -34,23 +34,12 @@ spec:
         ...
 ----
 +
-NOTE: In the `metadata` section, you need to include the `namespace` property and specify a value *only* if you are using the {{ClientTool} ContainerName} web console to create your CR instance. The value that you should specify is the name of the {ClientTool}  project for your broker deployment.
-
+ifndef::UpstreamBuild[]
+NOTE: In the `metadata` section, you need to include the `namespace` property and specify a value *only* if you are using the {OpenShiftContainerName} web console to create your CR instance. The value that you should specify is the name of the {ClientTool}  project for your broker deployment.
+endif::[]
 . Save the modified CR file.
 
-. Log in to {ClientTool}  with administrator privileges for the project in which you previously created your basic broker deployment:
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} login -u __<user>__ -p __<password>__ --server=__<host:port>__
-----
-
-. Switch to the project in which you previously created your basic broker deployment.
-+
-[source,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} project __<project-name>__
-----
+include::snippets/login_short_kube.adoc[]
 
 . At the command line, apply the change:
 +
@@ -59,7 +48,7 @@ $ {ClientCommand} project __<project-name>__
 $ {ClientCommand} apply -f __<path/to/custom-resource-instance>__.yaml
 ----
 +
-In the {{ClientTool} ContainerName} web console, additional broker Pods starts in your project, according to the number specified in your CR. By default, the brokers running in the project are clustered.
+In the {OpenShiftContainerName} web console, additional broker Pods starts in your project, according to the number specified in your CR. By default, the brokers running in the project are clustered.
 
 . Open the *Logs* tab of each Pod. The logs show that {ClientTool}  has established a cluster connection bridge on each broker. Specifically, the log output includes a line like the following:
 +

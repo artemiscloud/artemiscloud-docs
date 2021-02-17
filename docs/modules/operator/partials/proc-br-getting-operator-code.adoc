@@ -10,10 +10,10 @@ This procedure shows how to access and prepare the code you need to install the 
 .Procedure
 
 ifdef::UpstreamBuild[]
-include::snippets/getting_code_upstream.adoc[]
+include::snippets/getting_code_kube.adoc[]
 endif::[]
 ifndef::UpstreamBuild[]
-include::snippets/getting_code_downstream.adoc[]
+include::snippets/getting_code_openshift.adoc[]
 endif::[]
 
 
@@ -40,28 +40,14 @@ $ unzip {OperatorExamplePrefix}{OperatorGithubVersion}{OperatorExampleSuffix}
 $ cd {OperatorCrdName}
 ----
 
-. Log in to {OpenShiftContainerName} as a cluster administrator. For example:
-+
-[source,bash,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} login -u system:admin
-----
+ifdef::UpstreamBuild[]
+include::snippets/login_kube.adoc[]
+endif::[]
 
-. Specify the project in which you want to install the Operator. You can create a new project or switch to an existing one.
+ifndef::UpstreamBuild[]
+include::snippets/login_openshift.adoc[]
+endif::[]
 
-.. Create a new project:
-+
-[source,bash,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} new-project __<project-name>__
-----
-
-.. Or, switch to an existing project:
-+
-[source,bash,options="nowrap",subs="+quotes,+attributes"]
-----
-$ {ClientCommand} project __<project-name>__
-----
 
 . Specify a service account to use with the Operator.
 

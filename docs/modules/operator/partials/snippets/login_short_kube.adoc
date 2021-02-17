@@ -1,0 +1,6 @@
+. Switch to projects namespace:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} config set-context $(kubectl config current-context) --namespace= __<project-name>__
+----

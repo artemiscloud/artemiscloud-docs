@@ -1,0 +1,9 @@
+--
+.. Using the {ClientTool}  command-line interface:
+... Swith to the namespace you are using for your project
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} config set-context $(kubectl config current-context) --namespace= __<project-name>__
+----
+... Open the sample CR file called `broker_activemqartemis_cr.yaml` that is included in the `deploy/crs` directory of the Operator installation archive that you downloaded and extracted.

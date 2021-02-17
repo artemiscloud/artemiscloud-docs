@@ -1,0 +1,49 @@
+. Deploy the CR instance.
+
+.. Using the {ClientTool}  command-line interface:
+... Save the CR file.
+... Switch to the project in which you are creating the broker deployment.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} project __<project-name>__
+----
+... Create the CR.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} create -f __<path/to/custom-resource-instance>__.yaml
+----
+
+.. Using the {OpenShiftContainerName} web console:
+... When you have finished configuring the CR, click *Create*.
+
+. In the {OpenShiftContainerName} web console, click menu:Workloads[Stateful Sets] ({OpenShiftContainerName} 4.1 or later) or menu:Applications[Stateful Sets] ({OpenShiftContainerName} 3.11). You see a new Stateful Set called `ex-aao-ss`.
+.. Click the *ex-aao-ss* Stateful Set. You see that there is one Pod, corresponding to the single broker that you defined in the CR.
+.. Within the Stateful Set, click the *Pods* tab. Click the *ex-aao-ss* Pod. On the *Events* tab of the running Pod, you see that the broker container has started. The *Logs* tab shows that the broker itself is running.
+
+. To test that the broker is running normally, access a shell on the broker Pod to send some test messages.
+
+.. Using the {OpenShiftContainerName} web console:
+... Click menu:Workloads[Pods] ({OpenShiftContainerName} 4.1 or later) or menu:Applications[Pods] ({OpenShiftContainerName} 3.11).
+... Click the *ex-aao-ss* Pod.
+... Click the *Terminal* tab.
+
+.. Using the {ClientTool}  command-line interface:
+... Get the Pod names and internal IP addresses for your project.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} get pods -o wide
+
+NAME                          STATUS   IP
+amq-broker-operator-54d996c   Running  10.129.2.14
+ex-aao-ss-0                   Running  10.129.2.15
+----
+
+... Access the shell for the broker Pod.
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} rsh ex-aao-ss-0
+----

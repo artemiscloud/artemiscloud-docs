@@ -1,0 +1,19 @@
+--
+.. Using the {ClientTool}  command-line interface:
+... Log in to {ClientTool}  as a user that has privileges to deploy CRs in the project in which you are creating the deployment:
++
+[source,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} login -u __<user>__ -p __<password>__ --server=__<host:port>__
+----
+... Open the sample CR file called `broker_activemqartemis_cr.yaml` that is included in the `deploy/crs` directory of the Operator installation archive that you downloaded and extracted.
+
+.. Using the {OpenShiftContainerName} web console:
+... Log in to the console as a user that has privileges to deploy CRs in the project in which you are creating the deployment.
+... Start a new CR instance based on the main broker CRD. In the left pane, click menu:Administration[Custom Resource Definitions]
+... Click the `ActiveMQArtemis` CRD.
+... Click the `Instances` tab.
+... Click *Create ActiveMQArtemis*.
+
++
+Within the console, a YAML editor opens, enabling you to configure a CR instance.

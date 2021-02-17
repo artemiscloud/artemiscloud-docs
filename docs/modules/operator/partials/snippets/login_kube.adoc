@@ -1,0 +1,15 @@
+. Specify the project in which you want to install the Operator. You can create a new project or switch to an existing one.
+
+.. Create a new namespace:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} create namespace  __<project-name>__
+----
+
+.. Or, switch to an existing namespace:
++
+[source,bash,options="nowrap",subs="+quotes,+attributes"]
+----
+$ {ClientCommand} config set-context $(kubectl config current-context) --namespace= __<project-name>__
+----

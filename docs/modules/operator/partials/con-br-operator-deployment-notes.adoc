@@ -7,9 +7,13 @@
 
 This section describes some important considerations when planning an Operator-based deployment
 
-* Deploying the Custom Resource Definitions (CRDs) that accompany the {BrokerName} Operator requires cluster administrator privileges for your {ClientTool}  cluster. When the Operator is deployed, non-administrator users can create broker instances via corresponding Custom Resources (CRs). To enable regular users to deploy CRs, the cluster administrator must first assign roles and permissions to the CRDs. For more information, see link:https://docs.openshift.com/container-platform/4.5/operators/understanding/crds/crd-extending-api-with-crds.html#crd-creating-aggregated-cluster-role_crd-extending-api-with-crds[Creating cluster roles for Custom Resource Definitions] in the {{ClientTool} ContainerName} documentation.
+* Deploying the Custom Resource Definitions (CRDs) that accompany the {BrokerName} Operator requires cluster administrator privileges for your {ClientTool}  cluster. When the Operator is deployed, non-administrator users can create broker instances via corresponding Custom Resources (CRs). To enable regular users to deploy CRs, the cluster administrator must first assign roles and permissions to the CRDs. For more information, see link:{clusterRoleLink}[Creating cluster roles for Custom Resource Definitions] in the {OpenShiftContainerName} documentation.
 
-* When you update your cluster with the CRDs for the latest Operator version, this update affects *all* projects in the cluster. Any broker Pods deployed from previous versions of the Operator might become unable to update their status. When you click the Logs tab of a running broker Pod in the {ClientTool}  Container Platform web console, you see messages indicating that 'UpdatePodStatus' has failed. However, the broker Pods and Operator in that project continue to work as expected. To fix this issue for an affected project, you must also upgrade that project to use the latest version of the Operator.
+* When you update your cluster with the CRDs for the latest Operator version, this update affects *all* projects in the cluster. Any broker Pods deployed from previous versions of the Operator might become unable to update their status.
+ifndef::UpstreamBuild[]
+When you click the Logs tab of a running broker Pod in the {ClientTool}  Container Platform web console, you see messages indicating that 'UpdatePodStatus' has failed. However, the broker Pods and Operator in that project continue to work as expected.
+endif::[]
+To fix this issue for an affected project, you must also upgrade that project to use the latest version of the Operator.
 
 * You cannot create more than one broker deployment in a given {ClientTool}  project by deploying multiple broker Custom Resource (CR) instances. However, when you have created a broker deployment in a project, you *can* deploy multiple CR instances for addresses.
 
@@ -17,11 +21,17 @@ This section describes some important considerations when planning an Operator-b
 +
 If you specify `persistenceEnabled=false` in your CR, the deployed brokers uses _ephemeral_ storage. Ephemeral storage means that that every time you restart the broker Pods, any existing data is lost.
 +
-For more information about provisioning persistent storage in {{ClientTool} ContainerName}, see:
+For more information about provisioning persistent storage in {OpenShiftContainerName}, see:
 +
-** link:https://docs.openshift.com/container-platform/4.1/storage/understanding-persistent-storage.html[Understanding persistent storage] ({{ClientTool} ContainerName} 4.1 and later)
-** link:https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/storage.html[Persistent Storage] ({{ClientTool} ContainerName} 3.11).
+ifndef::UpstreamBuild[]
+** link:https://docs.openshift.com/container-platform/4.1/storage/understanding-persistent-storage.html[Understanding persistent storage] ({OpenShiftContainerName} 4.1 and later)
+** link:https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/storage.html[Persistent Storage] ({OpenShiftContainerName} 3.11).
+endif::[]
+ifdef::UpstreamBuild[]
+** link:https://kubernetes.io/docs/concepts/storage/persistent-volumes[Persistent Volumes]
+endif::[]
 
+ifndef::UpstreamBuild[]
 * You must add configuration for the following items to the main broker CR instance *before* deploying the CR for the first time.
 +
 --
@@ -30,3 +40,4 @@ For more information about provisioning persistent storage in {{ClientTool} Cont
 
 You *cannot* add configuration for the listed items to a broker deployment that is already running.
 --
+endif::[]

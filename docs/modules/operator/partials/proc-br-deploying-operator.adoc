@@ -5,7 +5,7 @@
 [id='proc-br-deploying-operator_{context}']
 = Deploying the Operator using the CLI
 
-The procedure in this section shows how to use the {ClientTool}  command-line interface (CLI) to deploy the latest version of the Operator for {BrokerName} {BrokerVersion} in your {ClientTool}  project.
+The procedure in this section shows how to use the {ClientTool}  command-line interface (CLI) to deploy the latest version of the Operator for {OperatorName} {BrokerVersion} in your {ClientTool}  project.
 
 .Prerequisites
 
@@ -29,13 +29,13 @@ endif::[]
 
 .Procedure
 
-. In the {ClientTool}  command-line interface (CLI), log in to {{ClientTool} ContainerName} as a cluster administrator. For example:
+ifndef::UpstreamBuild[]
+. In the {ClientTool}  command-line interface (CLI), log in to {OpenShiftContainerName} as a cluster administrator. For example:
 +
 [source,bash,options="nowrap",subs="+quotes,+attributes"]
 ----
 $ {ClientCommand} login -u system:admin
 ----
-
 . Switch to the project that you previously prepared for the Operator deployment. For example:
 +
 [source,bash,options="nowrap",subs="+quotes,+attributes"]
@@ -43,7 +43,6 @@ $ {ClientCommand} login -u system:admin
 $ {ClientCommand} project __<project-name>__
 ----
 
-ifndef::UpstreamBuild[]
 . If you previously deployed version 0.6 of the {BrokerName} Operator (that is, the Technical Preview version available in {BrokerName} 7.4) :
 
 .. Remove the main broker Custom Resource (CR) that you used to create your broker deployment. Deleting the main CR removes the existing broker deployment in the project. For example:
@@ -60,7 +59,6 @@ $ {ClientCommand} delete -f deploy/operator.yaml
 ----
 .. Remove the existing Custom Resource Definitions (CRDs) from the cluster.
 +
-endif::[]
 
 [source,bash,options="nowrap",subs="+attributes"]
 ----
@@ -68,6 +66,11 @@ $ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemis_crd.yaml
 $ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemisaddress_crd.yaml
 $ {ClientCommand} delete -f deploy/crds/broker_v1alpha1_activemqartemisscaledown_crd.yaml
 ----
+endif::[]
+
+ifdef::UpstreamBuild[]
+include::snippets/login_kube.adoc[]
+endif::[]
 
 . Switch to the directory that was created when you previously extracted the Operator installation archive. For example:
 +
@@ -96,6 +99,7 @@ $ {ClientCommand} create -f deploy/crds/{brokerAddressingCRD}_crd.yaml
 ----
 $ {ClientCommand} create -f deploy/crds/{brokerScaledownCRD}_crd.yaml
 ----
+ifndef::UpstreamBuild[]
 . Link the pull secret associated with the account used for authentication in the Red Hat Ecosystem Catalog with the `default`, `deployer`, and `builder` service accounts for your {ClientTool}  project.
 +
 [source,bash,options="nowrap",subs="+quotes,+attributes"]
@@ -105,7 +109,6 @@ $ {ClientCommand} secrets link --for=pull deployer __<secret-name>__
 $ {ClientCommand} secrets link --for=pull builder __<secret-name>__
 ----
 
-ifndef::UpstreamBuild[]
 +
 NOTE: In {OpenShiftContainerName} 4.1 or later, you can also use the web console to associate a pull secret with a project in which you want to deploy container images such as the {BrokerName} Operator. To do this, click menu:Administration[Service Accounts]. Specify the pull secret associated with the account that you use for authentication in the Red Hat Container Registry.
 endif::[]
@@ -129,7 +132,7 @@ $ {ClientCommand} create -f deploy/operator.yaml
 +
 In your {ClientTool}  project, the Operator starts in a new Pod.
 +
-In the {ContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that {ClientTool} has deployed the Operator image that you specified, has assigned a new container to a node in your {ClientTool}  cluster, and has started the new container.
+In the {OpenShiftContainerName} web console, the information on the *Events* tab of the Operator Pod confirms that {ClientTool} has deployed the Operator image that you specified, has assigned a new container to a node in your {ClientTool}  cluster, and has started the new container.
 +
 In addition, if you click the *Logs* tab within the Pod, the output should include lines resembling the following:
 +
